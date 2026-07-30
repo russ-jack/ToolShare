@@ -541,14 +541,11 @@ window.openToolModal = function(id) {
             
             <!-- Formulario de Préstamo -->
             <div class="space-y-4 mb-6 bg-black/20 p-4 rounded-xl border border-white/5">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Desde</label>
-                        <input id="date-from-${id}" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
-                    </div>
-                    <div>
-                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Hasta</label>
-                        <input id="date-to-${id}" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Fechas de Préstamo</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">date_range</span>
+                        <input id="date-range-${id}" type="text" placeholder="Selecciona el rango de días..." class="w-full glass-input rounded-lg py-3 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 cursor-pointer" readonly>
                     </div>
                 </div>
                 
@@ -601,31 +598,39 @@ window.openToolModal = function(id) {
         };
     }
 
-    // Dynamic cost calculation
-    const inputFrom = modal.querySelector(`#date-from-${id}`);
-    const inputTo = modal.querySelector(`#date-to-${id}`);
+    // Dynamic cost calculation with Flatpickr
+    const inputRange = modal.querySelector(`#date-range-${id}`);
     const totalCostLabel = modal.querySelector(`#total-cost-${id}`);
     
-    const calculateCost = () => {
-        if (inputFrom.value && inputTo.value) {
-            const start = new Date(inputFrom.value);
-            const end = new Date(inputTo.value);
-            const diffTime = end - start;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            
-            if (diffDays > 0) {
-                const total = diffDays * price;
-                totalCostLabel.textContent = `$${total.toFixed(2)}`;
-                totalCostLabel.classList.add('text-[#97BC62]');
-            } else {
-                totalCostLabel.textContent = '$0.00';
-                totalCostLabel.classList.remove('text-[#97BC62]');
+    if (window.flatpickr) {
+        flatpickr(inputRange, {
+            mode: "range",
+            locale: "es",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth >= 768 ? 2 : 1, // Mostrar 2 meses en desktop
+            onChange: function(selectedDates) {
+                if (selectedDates.length === 2) {
+                    const start = selectedDates[0];
+                    const end = selectedDates[1];
+                    const diffTime = end - start;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    
+                    if (diffDays > 0) {
+                        const total = diffDays * price;
+                        totalCostLabel.textContent = `$${total.toFixed(2)}`;
+                        totalCostLabel.classList.add('text-[#97BC62]');
+                    } else {
+                        totalCostLabel.textContent = '$0.00';
+                        totalCostLabel.classList.remove('text-[#97BC62]');
+                    }
+                } else {
+                    totalCostLabel.textContent = '$0.00';
+                    totalCostLabel.classList.remove('text-[#97BC62]');
+                }
             }
-        }
-    };
-    
-    inputFrom.addEventListener('change', calculateCost);
-    inputTo.addEventListener('change', calculateCost);
+        });
+    }
 };
 
 window.logout = function() {
