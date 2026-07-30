@@ -146,28 +146,22 @@ function setupDashboard() {
     if (!btnAddTool) return;
     
     btnAddTool.addEventListener('click', () => {
-        // En una app real, esto abriría un modal. Para la demo, usamos prompts rápidos.
-        const title = prompt("DEMO: Escribe el nombre de la herramienta a publicar:");
-        if (!title) return; // Cancelado
-        
-        const category = prompt("DEMO: Categoría (Ej. Construcción, Jardinería):", "Construcción");
-        
-        const newTool = {
-            title: title,
-            category: category,
-            categoryIcon: "ph-wrench",
-            owner: { name: "Alejandro (Tú)", initial: "A", rating: 5.0, reviews: 0 },
-            distance: "a 0 metros (tu casa)",
-            image: "https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800", // Imagen genérica
-            status: "available",
-            statusText: "Disponible"
-        };
-        
-        // Guardar en la "Base de Datos" (LocalStorage)
-        addTool(newTool);
-        
-        alert("¡Herramienta publicada con éxito en LocalStorage!");
-        window.location.reload(); // Recargar para ver contadores actualizados
+        showAddToolModal((title, category) => {
+            const newTool = {
+                title: title,
+                category: category,
+                categoryIcon: "ph-wrench",
+                owner: { name: "Alejandro (Tú)", initial: "A", rating: 5.0, reviews: 0 },
+                distance: "a 0 metros (tu casa)",
+                image: "https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800", // Imagen genérica
+                status: "available",
+                statusText: "Disponible"
+            };
+            
+            addTool(newTool);
+            renderDashboardTools();
+            showToast("Herramienta publicada con éxito");
+        });
     });
     
     // Actualizar un contador del dashboard de forma dinámica
@@ -216,6 +210,136 @@ function renderDashboardTools() {
         tbody.appendChild(tr);
     });
 }
+
+// 8. Utilidades UI (Modales y Toasts)
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-6 right-6 px-4 py-3 rounded-lg font-label-md text-label-md shadow-2xl z-[100] transform transition-all duration-300 translate-y-10 opacity-0 flex items-center gap-2 border border-white/10 ${
+        type === 'success' ? 'bg-[#97BC62] text-[#01390c]' : 'bg-error text-on-error'
+    }`;
+    toast.innerHTML = `<span class="material-symbols-outlined text-[20px]">${type === 'success' ? 'check_circle' : 'error'}</span> ${message}`;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+    setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function showConfirmModal(title, message, onConfirm) {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center opacity-0 transition-opacity duration-300 px-4';
+    
+    const modal = document.createElement('div');
+    modal.className = 'glass-card rounded-2xl p-6 w-full max-w-sm border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300';
+    
+    modal.innerHTML = `
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">${title}</h3>
+        <p class="text-on-surface-variant font-body-md text-body-md mb-6">${message}</p>
+        <div class="flex justify-end gap-3">
+            <button id="btn-cancel" class="px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface hover:bg-white/5 transition-colors">Cancelar</button>
+            <button id="btn-confirm" class="px-4 py-2 rounded-lg font-label-md text-label-md bg-error text-on-error hover:opacity-90 transition-opacity">Borrar</button>
+        </div>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+        modal.classList.remove('scale-95', 'opacity-0');
+    }, 10);
+    
+    const close = () => {
+        overlay.classList.add('opacity-0');
+        modal.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => overlay.remove(), 300);
+    };
+    
+    modal.querySelector('#btn-cancel').onclick = close;
+    modal.querySelector('#btn-confirm').onclick = () => {
+        onConfirm();
+        close();
+    };
+}
+
+function showAddToolModal(onSubmit) {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center opacity-0 transition-opacity duration-300 px-4';
+    
+    const modal = document.createElement('div');
+    modal.className = 'glass-card rounded-2xl p-6 w-full max-w-md border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300';
+    
+    modal.innerHTML = `
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Nueva Herramienta</h3>
+        <div class="space-y-4 mb-6">
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nombre de la herramienta</label>
+                <input id="tool-name" type="text" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: Taladro Percutor">
+            </div>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Categoría</label>
+                <select id="tool-category" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 bg-[#0c0e14]">
+                    <option value="Construcción">Construcción</option>
+                    <option value="Jardinería">Jardinería</option>
+                    <option value="Automotriz">Automotriz</option>
+                    <option value="Limpieza">Limpieza</option>
+                    <option value="Eléctricas">Eléctricas</option>
+                    <option value="Manuales">Manuales</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex justify-end gap-3">
+            <button id="btn-cancel" class="px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface hover:bg-white/5 transition-colors">Cancelar</button>
+            <button id="btn-submit" class="px-4 py-2 rounded-lg font-label-md text-label-md bg-[#97BC62] text-[#01390c] hover:opacity-90 transition-opacity font-medium">Publicar</button>
+        </div>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+        modal.classList.remove('scale-95', 'opacity-0');
+        modal.querySelector('#tool-name').focus();
+    }, 10);
+    
+    const close = () => {
+        overlay.classList.add('opacity-0');
+        modal.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => overlay.remove(), 300);
+    };
+    
+    modal.querySelector('#btn-cancel').onclick = close;
+    modal.querySelector('#btn-submit').onclick = () => {
+        const title = modal.querySelector('#tool-name').value.trim();
+        const category = modal.querySelector('#tool-category').value;
+        if (!title) {
+            showToast('El nombre es obligatorio', 'error');
+            return;
+        }
+        onSubmit(title, category);
+        close();
+    };
+}
+
+// Global functions for inline HTML calls
+window.processRequest = function(btn) {
+    btn.closest('.glass-panel').remove();
+    showToast('Solicitud procesada con éxito', 'success');
+};
+
+window.deleteTool = function(id) {
+    showConfirmModal('¿Eliminar herramienta?', 'Esta acción no se puede deshacer.', () => {
+        const db = getDB();
+        db.tools = db.tools.filter(t => t.id !== id);
+        saveDB(db);
+        renderDashboardTools();
+        showToast('Herramienta eliminada correctamente', 'success');
+    });
+};
 
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---
 function initApp() {

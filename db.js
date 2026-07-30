@@ -116,15 +116,6 @@ function addTool(tool) {
     saveDB(db);
 }
 
-// Eliminar herramienta
-function deleteTool(id) {
-    if (!confirm('¿Estás seguro de eliminar esta herramienta?')) return;
-    const db = getDB();
-    db.tools = db.tools.filter(t => t.id !== id);
-    saveDB(db);
-    window.location.reload();
-}
-
 // Login
 function loginUser(email) {
     const db = getDB();
