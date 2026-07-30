@@ -201,6 +201,7 @@ function setupDashboard() {
     // Configurar menús y pestañas
     setupSidebar();
     setupProfileDropdown();
+    setupNotificationDropdown();
 
     // Renderizar la tabla de herramientas dinámicamente en todas las vistas
     renderDashboardTools();
@@ -704,6 +705,36 @@ function setupProfileDropdown() {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             dropdown.classList.toggle('hidden');
+            
+            // Cerrar el otro dropdown si está abierto
+            const notifDropdown = document.getElementById('notification-dropdown');
+            if (notifDropdown && !notifDropdown.classList.contains('hidden')) {
+                notifDropdown.classList.add('hidden');
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    }
+}
+
+function setupNotificationDropdown() {
+    const btn = document.getElementById('notification-btn');
+    const dropdown = document.getElementById('notification-dropdown');
+    
+    if (btn && dropdown) {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+            
+            // Cerrar el otro dropdown si está abierto
+            const profileDropdown = document.getElementById('profile-dropdown');
+            if (profileDropdown && !profileDropdown.classList.contains('hidden')) {
+                profileDropdown.classList.add('hidden');
+            }
         });
         
         document.addEventListener('click', (e) => {

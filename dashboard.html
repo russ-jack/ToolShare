@@ -87,9 +87,33 @@
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
                 <input class="bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:border-[#97BC62] focus:ring-1 focus:ring-[#97BC62] transition-colors w-48 placeholder-on-surface-variant" placeholder="Buscar..." type="text"/>
             </div>
-            <button class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95">
-                <span class="material-symbols-outlined text-[24px]">notifications</span>
-            </button>
+            <div class="relative inline-block text-left">
+                <button id="notification-btn" class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95 relative">
+                    <span class="material-symbols-outlined text-[24px]">notifications</span>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-error ring-2 ring-surface"></span>
+                </button>
+                <div id="notification-dropdown" class="hidden absolute right-0 mt-3 w-80 rounded-xl shadow-2xl glass-card ring-1 ring-white/10 focus:outline-none z-50 overflow-hidden border border-white/10">
+                    <div class="px-4 py-3 border-b border-white/10 flex justify-between items-center bg-black/40">
+                        <h3 class="text-sm font-semibold text-on-surface">Notificaciones</h3>
+                        <span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full font-medium">2 nuevas</span>
+                    </div>
+                    <div class="max-h-64 overflow-y-auto hide-scrollbar">
+                        <div class="px-4 py-3 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer opacity-100">
+                            <p class="text-xs text-primary font-medium mb-1">Solicitud de Préstamo</p>
+                            <p class="text-sm text-on-surface"><strong>Juan Pérez</strong> quiere tu <span class="font-medium text-white">Taladro Percutor</span> para mañana.</p>
+                            <p class="text-[10px] text-on-surface-variant mt-1">Hace 5 minutos</p>
+                        </div>
+                        <div class="px-4 py-3 hover:bg-white/5 transition-colors cursor-pointer opacity-100">
+                            <p class="text-xs text-error font-medium mb-1">Recordatorio de Devolución</p>
+                            <p class="text-sm text-on-surface">Debes devolver la <span class="font-medium text-white">Escalera Telescópica</span> hoy antes de las 18:00 hrs.</p>
+                            <p class="text-[10px] text-on-surface-variant mt-1">Hace 2 horas</p>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2 border-t border-white/10 text-center bg-black/40">
+                        <a href="#" class="text-xs text-primary hover:underline font-medium">Ver todas</a>
+                    </div>
+                </div>
+            </div>
             <button class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95 hidden sm:block">
                 <span class="material-symbols-outlined text-[24px]">help_outline</span>
             </button>
