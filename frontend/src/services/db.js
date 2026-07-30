@@ -99,7 +99,10 @@ export async function fetchToolsFromAPI() {
         cachedTools = tools.map(t => ({
             ...t,
             title: t.name,
-            owner: { name: "Usuario", initial: "U", rating: t.rating || 5, reviews: t.reviews || 0 }
+            owner: { name: "Usuario", initial: "U", rating: t.rating || 5, reviews: t.reviews || 0 },
+            // Mapear el status de la DB al formato de la UI
+            status: t.status === 'Disponible' ? 'available' : 'borrowed',
+            statusText: t.status || 'Disponible'
         }));
     } catch (e) {
         console.warn("Usando datos locales de respaldo (Vercel o servidor apagado).");
@@ -119,7 +122,7 @@ export async function addTool(tool) {
         category: tool.category,
         price: tool.price || 0,
         description: tool.description || '',
-        status: tool.status || 'Disponible',
+        status: tool.status === 'available' ? 'Disponible' : 'En préstamo',
         image: tool.image
     };
     
@@ -135,8 +138,22 @@ export async function addTool(tool) {
         tool.id = Date.now();
         tool.owner = getCurrentUser() || { name: "Usuario", initial: "U", rating: 5, reviews: 0 };
         tool.distance = "a 1 cuadra";
+        tool.statusText = tool.status === 'available' ? 'Disponible' : 'En préstamo';
         cachedTools.unshift(tool); // Añadir al principio
         fallbackTools.unshift(tool);
         return tool;
+    }
+}
+
+// Borrar Herramienta
+export async function deleteToolBackend(id) {
+    try {
+        await fetchAPI(`/tools/${id}`, { method: 'DELETE' });
+        await fetchToolsFromAPI();
+    } catch (e) {
+        // Fallback
+        cachedTools = cachedTools.filter(t => t.id !== id);
+        const fbIndex = fallbackTools.findIndex(t => t.id === id);
+        if (fbIndex !== -1) fallbackTools.splice(fbIndex, 1);
     }
 }

@@ -2,7 +2,7 @@
  * ToolShare - Lógica Principal (Vanilla JS) + LocalStorage DB
  */
 
-import { getDB, saveDB, getTools, getCurrentUser, loginUser, logoutUser, addTool, fetchToolsFromAPI } from './services/db.js';
+import { getDB, saveDB, getTools, getCurrentUser, loginUser, logoutUser, addTool, fetchToolsFromAPI, deleteToolBackend } from './services/db.js';
 
 // 1. Renderizar Catálogo (Home)
 function renderCatalog(data) {
@@ -534,18 +534,16 @@ window.processRequest = function(btn) {
 };
 
 window.deleteTool = function(id) {
-    showConfirmModal('¿Eliminar herramienta?', 'Esta acción no se puede deshacer.', () => {
-        const db = getDB();
-        db.tools = db.tools.filter(t => t.id !== id);
-        saveDB(db);
+    showConfirmModal('¿Eliminar herramienta?', 'Esta acción no se puede deshacer.', async () => {
+        await deleteToolBackend(id);
         renderDashboardTools();
         showToast('Herramienta eliminada correctamente', 'success');
     });
 };
 
 window.openToolModal = function(id) {
-    const db = getDB();
-    const tool = db.tools.find(t => t.id === id);
+    const tools = getTools();
+    const tool = tools.find(t => t.id === id);
     if (!tool) return;
 
     const overlay = document.createElement('div');
