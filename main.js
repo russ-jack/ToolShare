@@ -422,14 +422,11 @@ function showAddToolModal(onSubmit) {
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día</label>
                 <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="15">
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disponible Desde</label>
-                    <input id="tool-date-from" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
-                </div>
-                <div>
-                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Hasta</label>
-                    <input id="tool-date-to" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+            <div class="mb-4">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disponibilidad de la Herramienta</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">date_range</span>
+                    <input id="tool-date-range" type="text" placeholder="Selecciona desde cuándo hasta cuándo..." class="w-full glass-input rounded-lg py-2 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 cursor-pointer" readonly>
                 </div>
             </div>
         </div>
@@ -446,6 +443,18 @@ function showAddToolModal(onSubmit) {
         overlay.classList.remove('opacity-0');
         modal.classList.remove('scale-95', 'opacity-0');
         modal.querySelector('#tool-name').focus();
+        
+        // Inicializar flatpickr si está disponible
+        const dateRangeInput = modal.querySelector('#tool-date-range');
+        if (window.flatpickr && dateRangeInput) {
+            flatpickr(dateRangeInput, {
+                mode: "range",
+                locale: "es",
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                showMonths: window.innerWidth >= 768 ? 2 : 1
+            });
+        }
     }, 10);
     
     const close = () => {
