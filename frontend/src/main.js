@@ -178,10 +178,12 @@ function setupLogin() {
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
 
-        // Validar que sea admin@vecindario.com y 12345678
-        if (email === 'admin@vecindario.com' && password === '12345678') {
-            loginUser(email); // Guarda la sesión en LocalStorage
+        // Validar usando la función centralizada en db.js
+        const success = loginUser(email, password);
+        if (success) {
             window.location.href = 'dashboard.html'; // Redirige al panel
+        } else {
+            alert('Credenciales incorrectas. Intenta de nuevo.');
         }
     });
     
