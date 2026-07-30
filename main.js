@@ -323,6 +323,7 @@ function renderDashboardTools() {
                 <td class="px-4 py-3 text-on-surface-variant">${tool.category}</td>
                 <td class="px-4 py-3">${statusBadge}</td>
                 <td class="px-4 py-3 text-right">
+                    <button onclick="editTool(${tool.id})" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full" title="Editar"><span class="material-symbols-outlined text-[18px]">edit</span></button>
                     <button onclick="deleteTool(${tool.id})" class="text-error hover:bg-error/10 p-2 rounded-full transition-colors" title="Eliminar"><span class="material-symbols-outlined text-[18px]">delete</span></button>
                 </td>
             `;
@@ -385,7 +386,8 @@ function showConfirmModal(title, message, onConfirm) {
     };
 }
 
-function showAddToolModal(onSubmit) {
+function showAddToolModal(onSubmit, tool = null) {
+    const isEdit = !!tool;
     const overlay = document.createElement('div');
     overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center opacity-0 transition-opacity duration-300 px-4';
     
@@ -393,7 +395,7 @@ function showAddToolModal(onSubmit) {
     modal.className = 'glass-card rounded-2xl p-6 w-full max-w-md border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[90vh] overflow-y-auto hide-scrollbar';
     
     modal.innerHTML = `
-        <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Nueva Herramienta</h3>
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-4">${isEdit ? 'Editar Herramienta' : 'Nueva Herramienta'}</h3>
         <div class="space-y-4 mb-6">
             <div>
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nombre de la herramienta</label>
@@ -420,7 +422,7 @@ function showAddToolModal(onSubmit) {
             
             <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día</label>
-                <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="15">
+                <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="${isEdit ? tool.price : '15'}">
             </div>
             <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disponibilidad de la Herramienta</label>
@@ -432,7 +434,7 @@ function showAddToolModal(onSubmit) {
         </div>
         <div class="flex justify-end gap-3">
             <button id="btn-cancel" class="px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface hover:bg-white/5 transition-colors">Cancelar</button>
-            <button id="btn-submit" class="px-4 py-2 rounded-lg font-label-md text-label-md bg-[#97BC62] text-[#01390c] hover:opacity-90 transition-opacity font-medium">Publicar</button>
+            <button id="btn-submit" class="px-4 py-2 rounded-lg font-label-md text-label-md bg-[#97BC62] text-[#01390c] hover:opacity-90 transition-opacity font-medium">${isEdit ? 'Guardar Cambios' : 'Publicar'}</button>
         </div>
     `;
     
@@ -442,6 +444,12 @@ function showAddToolModal(onSubmit) {
     setTimeout(() => {
         overlay.classList.remove('opacity-0');
         modal.classList.remove('scale-95', 'opacity-0');
+        
+        if (isEdit) {
+            modal.querySelector('#tool-name').value = tool.title;
+            modal.querySelector('#tool-category').value = tool.category;
+        }
+        
         modal.querySelector('#tool-name').focus();
         
         // Inicializar flatpickr si está disponible
@@ -486,13 +494,35 @@ function showAddToolModal(onSubmit) {
             };
             reader.readAsDataURL(file);
         } else {
-            // Imagen por defecto si no se sube nada
-            const defaultImage = 'https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800';
-            onSubmit({ title, category, image: defaultImage, price });
+            // Si es edición, mantenemos la imagen anterior si no subió nada nuevo
+            const finalImage = isEdit ? tool.image : 'https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800';
+            onSubmit({ title, category, image: finalImage, price });
             close();
         }
     };
 }
+
+window.editTool = function(id) {
+    const db = getDB();
+    const toolIndex = db.tools.findIndex(t => t.id === id);
+    if (toolIndex === -1) return;
+    
+    const tool = db.tools[toolIndex];
+    
+    showAddToolModal((updatedData) => {
+        // Actualizar la herramienta existente
+        db.tools[toolIndex] = {
+            ...tool,
+            title: updatedData.title,
+            category: updatedData.category,
+            image: updatedData.image,
+            price: updatedData.price
+        };
+        saveDB(db);
+        renderDashboardTools();
+        showToast('Herramienta actualizada con éxito', 'success');
+    }, tool);
+};
 
 // Global functions for inline HTML calls
 window.processRequest = function(btn) {
