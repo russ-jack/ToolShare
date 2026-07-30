@@ -419,7 +419,7 @@ function showAddToolModal(onSubmit) {
             </div>
             
             <div class="mb-4">
-                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día (USD)</label>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día</label>
                 <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="15">
             </div>
             <div class="grid grid-cols-2 gap-4">
