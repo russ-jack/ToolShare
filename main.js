@@ -602,9 +602,9 @@ window.openToolModal = function(id) {
     }
 
     // Dynamic cost calculation
-    const inputFrom = modal.querySelector(\`#date-from-\${id}\`);
-    const inputTo = modal.querySelector(\`#date-to-\${id}\`);
-    const totalCostLabel = modal.querySelector(\`#total-cost-\${id}\`);
+    const inputFrom = modal.querySelector(`#date-from-${id}`);
+    const inputTo = modal.querySelector(`#date-to-${id}`);
+    const totalCostLabel = modal.querySelector(`#total-cost-${id}`);
     
     const calculateCost = () => {
         if (inputFrom.value && inputTo.value) {
@@ -615,7 +615,7 @@ window.openToolModal = function(id) {
             
             if (diffDays > 0) {
                 const total = diffDays * price;
-                totalCostLabel.textContent = \`$\${total.toFixed(2)}\`;
+                totalCostLabel.textContent = `$${total.toFixed(2)}`;
                 totalCostLabel.classList.add('text-[#97BC62]');
             } else {
                 totalCostLabel.textContent = '$0.00';
