@@ -90,7 +90,19 @@
             <button class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95 hidden sm:block">
                 <span class="material-symbols-outlined text-[24px]">help_outline</span>
             </button>
-            <img alt="Administrator profile picture" class="w-8 h-8 rounded-full object-cover border border-white/20 ml-2" data-alt="A professional close up portrait of Alejandro, a friendly and experienced craftsman in a modern workshop setting, cinematic soft lighting, dark background, premium photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbiPZWvS4ZTOJB-kkKI0gMJYHJ74z_z4XY4W_mpeEtM8U7fqKt5vML_QNzT0y7gK6q_n2kuyTv0kHY7j5Sx091gLpbRgvFTq7AIEnCJpYvmEUm5N1mZYMcsPrmQniFg1rY7dBRayVIBl15v4OapP8mfhf9y4-q_vDUwlw5pUe5gfdS4Yf_9AN4GyaPWuqqauwS-wgY_aOk0nsRi0vq688pUOT7dRlY6N9kgHGyER2ubybag1xmK7wa7w"/>
+            <div class="relative inline-block text-left ml-2">
+                <img id="profile-btn" alt="Administrator profile picture" class="w-8 h-8 rounded-full object-cover border border-white/20 cursor-pointer hover:border-[#97BC62] transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbiPZWvS4ZTOJB-kkKI0gMJYHJ74z_z4XY4W_mpeEtM8U7fqKt5vML_QNzT0y7gK6q_n2kuyTv0kHY7j5Sx091gLpbRgvFTq7AIEnCJpYvmEUm5N1mZYMcsPrmQniFg1rY7dBRayVIBl15v4OapP8mfhf9y4-q_vDUwlw5pUe5gfdS4Yf_9AN4GyaPWuqqauwS-wgY_aOk0nsRi0vq688pUOT7dRlY6N9kgHGyER2ubybag1xmK7wa7w"/>
+                <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-2xl glass-card ring-1 ring-white/10 focus:outline-none z-50 overflow-hidden border border-white/10">
+                    <div class="px-4 py-3 border-b border-white/10">
+                        <p class="text-sm font-medium text-on-surface">Alejandro (Admin)</p>
+                        <p class="text-xs text-on-surface-variant truncate mt-0.5">admin@vecindario.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="index.html" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-white/5 hover:text-primary transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">home</span> Volver al Catálogo</a>
+                        <button onclick="logout()" class="w-full text-left block px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">logout</span> Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -343,7 +355,7 @@
                         <input type="text" class="w-full glass-input rounded-lg py-3 px-4 text-on-surface focus:outline-none" value="Residencial Los Sauces" disabled>
                     </div>
                     <div class="pt-4 border-t border-white/10">
-                        <button onclick="window.location.href='index.html'" class="px-6 py-2.5 rounded-lg border border-error text-error hover:bg-error/10 transition-colors font-label-md font-medium">Cerrar Sesión</button>
+                        <button onclick="logout()" class="px-6 py-2.5 rounded-lg border border-error text-error hover:bg-error/10 transition-colors font-label-md font-medium">Cerrar Sesión</button>
                     </div>
                 </div>
             </div>

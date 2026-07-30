@@ -112,6 +112,36 @@ function setupSearch(allTools) {
     });
 }
 
+// 2. Lógica del Home (index.html)
+function setupHome() {
+    // Configurar menú de usuario
+    const user = getCurrentUser();
+    const userMenuContainer = document.getElementById('user-menu-container');
+    
+    if (userMenuContainer) {
+        if (user) {
+            userMenuContainer.innerHTML = `
+                <img id="profile-btn" alt="User profile" class="w-8 h-8 rounded-full object-cover border border-white/20 cursor-pointer hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrUpYEx51DkFZej9cE-k9F8WIjZPu7bZnweVIThQrwO8feX5apjUDcDEiYQEVRucBm1Ygu8CV6rzrEoy5TbNgAi4CekpraYuUScNeBaNOElyzvGuhuLLoo7-icY_JpV2Dgfwg1ALIV-hbbcelxbi54wIXiiwM0oQPaLDyoNiASA_x2C3GHbHVcBP2cFy31EmlNz1TLF29MlJkMj5UPtE6oyKCCGsSjh0hTQGivNUtA5fi7nJwSA7SniQ"/>
+                <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-2xl glass-card ring-1 ring-white/10 focus:outline-none z-50 overflow-hidden border border-white/10">
+                    <div class="px-4 py-3 border-b border-white/10">
+                        <p class="text-sm font-medium text-on-surface">${user.name}</p>
+                        <p class="text-xs text-on-surface-variant truncate mt-0.5">${user.email}</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="dashboard.html" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-white/5 hover:text-primary transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">dashboard</span> Admin Dashboard</a>
+                        <button onclick="logout()" class="w-full text-left block px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">logout</span> Cerrar Sesión</button>
+                    </div>
+                </div>
+            `;
+            setupProfileDropdown();
+        } else {
+            userMenuContainer.innerHTML = `
+                <a href="login.html" class="block font-label-md text-[#97BC62] hover:text-[#01390c] hover:bg-[#97BC62] transition-colors border border-[#97BC62] px-4 py-1.5 rounded-full">Iniciar Sesión</a>
+            `;
+        }
+    }
+}
+
 // 5. Lógica de Login (login.html)
 function setupLogin() {
     const loginForm = document.getElementById('login-form');
@@ -144,8 +174,9 @@ function setupDashboard() {
         return;
     }
 
-    // Configurar pestañas del sidebar
+    // Configurar menús y pestañas
     setupSidebar();
+    setupProfileDropdown();
 
     // Renderizar la tabla de herramientas dinámicamente en todas las vistas
     renderDashboardTools();
@@ -404,6 +435,29 @@ window.deleteTool = function(id) {
     });
 };
 
+window.logout = function() {
+    logoutUser(); // Definida en db.js
+    window.location.href = 'index.html';
+};
+
+function setupProfileDropdown() {
+    const btn = document.getElementById('profile-btn');
+    const dropdown = document.getElementById('profile-dropdown');
+    
+    if (btn && dropdown) {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('hidden');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    }
+}
+
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---
 function initApp() {
     const path = window.location.pathname;
@@ -415,6 +469,7 @@ function initApp() {
         setupDashboard();
     } else {
         // Asumimos index (home)
+        setupHome();
         const toolsData = getTools(); // Extrae datos de LocalStorage
         renderCatalog(toolsData);
         setupFilters(toolsData);
