@@ -2,7 +2,7 @@
  * ToolShare - Lógica Principal (Vanilla JS) + LocalStorage DB
  */
 
-import { getDB, saveDB, getTools, getCurrentUser, loginUser, logoutUser, addTool } from './services/db.js';
+import { getDB, saveDB, getTools, getCurrentUser, loginUser, logoutUser, addTool, fetchToolsFromAPI } from './services/db.js';
 
 // 1. Renderizar Catálogo (Home)
 function renderCatalog(data) {
@@ -748,18 +748,20 @@ function setupNotificationDropdown() {
 }
 
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---
-function initApp() {
+async function initApp() {
     const path = window.location.pathname;
 
     // Detectar página actual (Soportando URLs limpias de Vercel sin .html)
     if (path.includes('login')) {
         setupLogin();
     } else if (path.includes('dashboard')) {
+        await fetchToolsFromAPI(); // Cargar caché desde Backend
         setupDashboard();
     } else {
         // Asumimos index (home)
         setupHome();
-        const toolsData = getTools(); // Extrae datos de LocalStorage
+        await fetchToolsFromAPI(); // Cargar caché desde Backend
+        const toolsData = getTools(); // Extrae datos síncronos de la caché
         renderCatalog(toolsData);
         setupFilters(toolsData);
         setupSearch(toolsData);
