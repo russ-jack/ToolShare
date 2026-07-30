@@ -17,9 +17,8 @@ function renderCatalog(data) {
     data.forEach(tool => {
         // Generar tarjeta
         const article = document.createElement('article');
-        article.className = 'tool-card glass';
-        // Ajustamos la clase de la tarjeta para usar las proporcionadas por Stitch
         article.className = 'glass-card rounded-xl overflow-hidden cursor-pointer group flex flex-col h-full';
+        article.setAttribute('onclick', `openToolModal(${tool.id})`);
         
         const dotClass = tool.status === 'available' ? 'pulse-available' : 'pulse-borrowed';
         
@@ -67,8 +66,37 @@ function setupThemeToggle() {
     });
 }
 
+// --- ESTADO GLOBAL DEL CATÁLOGO ---
+window.catalogState = {
+    term: '',
+    category: 'Todos',
+    allTools: []
+};
+
+function updateCatalogView() {
+    let filtered = window.catalogState.allTools;
+    
+    // Filtrar por categoría
+    if (window.catalogState.category !== 'Todos') {
+        filtered = filtered.filter(t => t.category === window.catalogState.category);
+    }
+    
+    // Filtrar por búsqueda
+    if (window.catalogState.term) {
+        const term = window.catalogState.term.toLowerCase();
+        filtered = filtered.filter(t => 
+            t.title.toLowerCase().includes(term) || 
+            t.category.toLowerCase().includes(term) ||
+            (t.description && t.description.toLowerCase().includes(term))
+        );
+    }
+    
+    renderCatalog(filtered);
+}
+
 // 3. Manejo de Filtros (Home)
 function setupFilters(allTools) {
+    window.catalogState.allTools = allTools;
     const filtersContainer = document.getElementById('filters-container');
     if (!filtersContainer) return;
     
@@ -76,39 +104,35 @@ function setupFilters(allTools) {
     
     chips.forEach(chip => {
         chip.addEventListener('click', (e) => {
-            // Estilos inactivos para todos
-            chips.forEach(c => {
-                c.className = 'px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap';
-            });
+            chips.forEach(c => c.className = 'px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap');
             
-            // Estilos activos para el seleccionado
             const target = e.currentTarget;
             target.className = 'px-md py-xs rounded-full bg-primary/20 border border-primary text-primary font-label-md whitespace-nowrap shadow-[0_0_15px_rgba(151,188,98,0.2)]';
             
-            const category = target.textContent.trim();
-            
-            if (category === 'Todos') {
-                renderCatalog(allTools);
-            } else {
-                const filtered = allTools.filter(tool => tool.category === category);
-                renderCatalog(filtered);
-            }
+            window.catalogState.category = target.textContent.trim();
+            updateCatalogView();
         });
     });
 }
 
 // 4. Lógica de Búsqueda (Home)
 function setupSearch(allTools) {
+    window.catalogState.allTools = allTools;
     const searchInput = document.getElementById('search-input');
     if (!searchInput) return;
 
+    // Escuchar el botón Enter y la escritura normal
     searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = allTools.filter(tool => 
-            tool.title.toLowerCase().includes(term) || 
-            tool.category.toLowerCase().includes(term)
-        );
-        renderCatalog(filtered);
+        window.catalogState.term = e.target.value.trim();
+        updateCatalogView();
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            window.catalogState.term = e.target.value.trim();
+            updateCatalogView();
+        }
     });
 }
 
@@ -185,14 +209,16 @@ function setupDashboard() {
     const btnAddToolView = document.getElementById('btn-add-tool-view');
     
     const handleAdd = () => {
-        showAddToolModal((title, category) => {
+        showAddToolModal((toolData) => {
             const newTool = {
-                title: title,
-                category: category,
+                title: toolData.title,
+                category: toolData.category,
                 categoryIcon: "ph-wrench",
                 owner: { name: "Alejandro (Tú)", initial: "A", rating: 5.0, reviews: 0 },
                 distance: "a 0 metros (tu casa)",
-                image: "https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800", // Imagen genérica
+                image: toolData.image, 
+                price: toolData.price,
+                description: "Herramienta disponible para la comunidad.",
                 status: "available",
                 statusText: "Disponible"
             };
@@ -364,7 +390,7 @@ function showAddToolModal(onSubmit) {
     overlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center opacity-0 transition-opacity duration-300 px-4';
     
     const modal = document.createElement('div');
-    modal.className = 'glass-card rounded-2xl p-6 w-full max-w-md border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300';
+    modal.className = 'glass-card rounded-2xl p-6 w-full max-w-md border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[90vh] overflow-y-auto hide-scrollbar';
     
     modal.innerHTML = `
         <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Nueva Herramienta</h3>
@@ -383,6 +409,24 @@ function showAddToolModal(onSubmit) {
                     <option value="Eléctricas">Eléctricas</option>
                     <option value="Manuales">Manuales</option>
                 </select>
+            </div>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">URL de la Imagen</label>
+                <input id="tool-image" type="url" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="https://ejemplo.com/foto.jpg">
+            </div>
+            <div>
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día (USD)</label>
+                <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="15">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disponible Desde</label>
+                    <input id="tool-date-from" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+                </div>
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Hasta</label>
+                    <input id="tool-date-to" type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+                </div>
             </div>
         </div>
         <div class="flex justify-end gap-3">
@@ -410,11 +454,14 @@ function showAddToolModal(onSubmit) {
     modal.querySelector('#btn-submit').onclick = () => {
         const title = modal.querySelector('#tool-name').value.trim();
         const category = modal.querySelector('#tool-category').value;
+        const imageUrl = modal.querySelector('#tool-image').value.trim() || 'https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800';
+        const price = modal.querySelector('#tool-price').value || 15;
+        
         if (!title) {
             showToast('El nombre es obligatorio', 'error');
             return;
         }
-        onSubmit(title, category);
+        onSubmit({ title, category, image: imageUrl, price });
         close();
     };
 }
@@ -433,6 +480,99 @@ window.deleteTool = function(id) {
         renderDashboardTools();
         showToast('Herramienta eliminada correctamente', 'success');
     });
+};
+
+window.openToolModal = function(id) {
+    const db = getDB();
+    const tool = db.tools.find(t => t.id === id);
+    if (!tool) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center opacity-0 transition-opacity duration-300 p-4';
+    
+    const price = tool.price || 15.00;
+    const desc = tool.description || 'Herramienta en excelentes condiciones. Ideal para tus proyectos de ' + tool.category.toLowerCase() + '. Se entrega limpia y probada.';
+    
+    const modal = document.createElement('div');
+    modal.className = 'glass-card rounded-2xl w-full max-w-3xl border border-white/10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 overflow-hidden flex flex-col md:flex-row relative';
+    
+    modal.innerHTML = `
+        <div class="md:w-1/2 h-48 md:h-auto relative">
+            <img src="${tool.image}" class="w-full h-full object-cover" alt="${tool.title}" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-6">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-black/50 text-white font-label-sm text-label-sm border border-white/20 mb-2 backdrop-blur-md">
+                        <span class="w-1.5 h-1.5 rounded-full ${tool.status === 'available' ? 'bg-[#97BC62] pulse-available' : 'bg-white/50 pulse-borrowed'}"></span>
+                        ${tool.statusText}
+                    </span>
+                    <h3 class="font-headline-md text-headline-md text-white">${tool.title}</h3>
+                </div>
+            </div>
+            <!-- Botón cerrar móvil -->
+            <button id="btn-close-mobile" class="absolute top-4 right-4 md:hidden text-white bg-black/50 rounded-full p-1 border border-white/20">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="md:w-1/2 p-6 md:p-8 flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <p class="text-primary font-display text-2xl font-bold">$${price}<span class="text-on-surface-variant font-label-sm text-[14px] font-normal"> / día</span></p>
+                    <p class="text-on-surface-variant text-label-sm mt-1 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">location_on</span> ${tool.owner.name} (${tool.distance})
+                    </p>
+                </div>
+                <button id="btn-close-modal" class="hidden md:block text-on-surface-variant hover:text-white transition-colors bg-white/5 hover:bg-white/10 rounded-full p-2 border border-white/5">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+            
+            <div class="mb-6">
+                <h4 class="font-label-md text-label-md text-on-surface mb-2">Descripción</h4>
+                <p class="text-on-surface-variant text-body-md leading-relaxed">${desc}</p>
+            </div>
+            
+            <div class="space-y-4 mb-8 bg-black/20 p-4 rounded-xl border border-white/5">
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Fecha de Préstamo (Inicio)</label>
+                    <input type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+                </div>
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Fecha de Devolución</label>
+                    <input type="date" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 [color-scheme:dark]">
+                </div>
+            </div>
+            
+            <button id="btn-request" class="mt-auto w-full py-3.5 rounded-lg font-label-md text-label-md bg-[#97BC62] text-[#01390c] font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 ${tool.status !== 'available' ? 'opacity-50 cursor-not-allowed saturate-0' : 'shadow-[0_0_20px_rgba(151,188,98,0.2)]'}" ${tool.status !== 'available' ? 'disabled' : ''}>
+                <span class="material-symbols-outlined text-[20px]">${tool.status === 'available' ? 'handshake' : 'block'}</span>
+                ${tool.status === 'available' ? 'Solicitar Préstamo' : 'No Disponible'}
+            </button>
+        </div>
+    `;
+    
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+        modal.classList.remove('scale-95', 'opacity-0');
+    }, 10);
+    
+    const close = () => {
+        overlay.classList.add('opacity-0');
+        modal.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => overlay.remove(), 300);
+    };
+    
+    const btnCloseDesktop = modal.querySelector('#btn-close-modal');
+    if (btnCloseDesktop) btnCloseDesktop.onclick = close;
+    
+    const btnCloseMobile = modal.querySelector('#btn-close-mobile');
+    if (btnCloseMobile) btnCloseMobile.onclick = close;
+    
+    modal.querySelector('#btn-request').onclick = () => {
+        showToast('Solicitud enviada al dueño. ¡Espera su respuesta!', 'success');
+        close();
+    };
 };
 
 window.logout = function() {
