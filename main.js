@@ -119,9 +119,14 @@ function setupLogin() {
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById('email').value;
-        loginUser(email); // Guarda la sesión en LocalStorage
-        window.location.href = 'dashboard.html'; // Redirige al panel
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        // Validar que sea admin@vecindario.com y 12345678
+        if (email === 'admin@vecindario.com' && password === '12345678') {
+            loginUser(email); // Guarda la sesión en LocalStorage
+            window.location.href = 'dashboard.html'; // Redirige al panel
+        }
     });
     
     // Si ya está logueado, redirigir automáticamente
@@ -169,23 +174,6 @@ function setupDashboard() {
 
     if (btnAddTool) btnAddTool.addEventListener('click', handleAdd);
     if (btnAddToolView) btnAddToolView.addEventListener('click', handleAdd);
-        showAddToolModal((title, category) => {
-            const newTool = {
-                title: title,
-                category: category,
-                categoryIcon: "ph-wrench",
-                owner: { name: "Alejandro (Tú)", initial: "A", rating: 5.0, reviews: 0 },
-                distance: "a 0 metros (tu casa)",
-                image: "https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800", // Imagen genérica
-                status: "available",
-                statusText: "Disponible"
-            };
-            
-            addTool(newTool);
-            renderDashboardTools();
-            showToast("Herramienta publicada con éxito");
-        });
-    });
     
     // Actualizar un contador del dashboard de forma dinámica
     const activeLoans = document.querySelector('.glass-panel:nth-child(2) .font-headline-lg');
@@ -419,16 +407,14 @@ window.deleteTool = function(id) {
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---
 function initApp() {
     const path = window.location.pathname;
-    
-    // Ejecutar lógica según la página actual
-    if (path.includes('login.html')) {
+
+    // Detectar página actual (Soportando URLs limpias de Vercel sin .html)
+    if (path.includes('login')) {
         setupLogin();
-    } 
-    else if (path.includes('dashboard.html')) {
+    } else if (path.includes('dashboard')) {
         setupDashboard();
-    } 
-    else {
-        // Por defecto asumimos que estamos en el Home (index.html)
+    } else {
+        // Asumimos index (home)
         const toolsData = getTools(); // Extrae datos de LocalStorage
         renderCatalog(toolsData);
         setupFilters(toolsData);
