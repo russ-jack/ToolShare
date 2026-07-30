@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ToolShare Admin Dashboard</title>
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="tailwind.config.js"></script>
+    
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="text-on-surface min-h-screen overflow-x-hidden selection:bg-primary-container selection:text-white">
+    <!-- 1. SideNavBar -->
+    <nav class="bg-surface/10 dark:bg-surface/10 h-screen w-64 fixed left-0 top-0 backdrop-blur-xl border-r border-white/10 shadow-2xl flex flex-col h-full p-md z-50 hidden md:flex">
+        <!-- Brand/Header -->
+        <div class="mb-lg">
+            <h1 class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handyman</span>
+                ToolShare Admin
+            </h1>
+            <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Premium Workshop</p>
+        </div>
+        
+        <!-- Navigation Links -->
+        <ul class="flex-1 space-y-2">
+            <!-- Active: Dashboard -->
+            <li>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 transition-all duration-200" href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-label-md text-label-md">Dashboard</span>
+                </a>
+            </li>
+            <!-- Inactive -->
+            <li>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 scale-102 hover:scale-105" href="#">
+                    <span class="material-symbols-outlined">handyman</span>
+                    <span class="font-label-md text-label-md">Mis Herramientas</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                    <span class="material-symbols-outlined">pending_actions</span>
+                    <span class="font-label-md text-label-md">Solicitudes</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                    <span class="material-symbols-outlined">history</span>
+                    <span class="font-label-md text-label-md">Historial</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="font-label-md text-label-md">Ajustes</span>
+                </a>
+            </li>
+        </ul>
+        
+        <!-- CTA -->
+        <button class="mt-auto w-full bg-primary-container text-white py-3 px-4 rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-primary-container/80 transition-colors duration-200">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            Nueva Herramienta
+        </button>
+    </nav>
+
+    <!-- 2. TopNavBar -->
+    <header class="bg-surface/5 dark:bg-surface/5 docked full-width top-0 h-16 backdrop-blur-md border-b border-white/5 flat no shadows flex justify-between items-center md:ml-64 px-md md:w-[calc(100%-16rem)] fixed w-full z-40">
+        <!-- Mobile Logo -->
+        <div class="md:hidden flex items-center">
+            <h1 class="font-headline-md text-headline-md font-extrabold text-primary" onclick="window.location.href='index.html'">Admin Dashboard</h1>
+        </div>
+        
+        <!-- Search Area -->
+        <div class="flex-1 flex justify-end items-center gap-4">
+            <div class="relative hidden sm:block">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+                <input class="bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-1.5 font-label-md text-label-md text-on-surface focus:outline-none focus:border-[#97BC62] focus:ring-1 focus:ring-[#97BC62] transition-colors w-48 placeholder-on-surface-variant" placeholder="Buscar..." type="text"/>
+            </div>
+            <button class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95">
+                <span class="material-symbols-outlined text-[24px]">notifications</span>
+            </button>
+            <button class="text-on-surface-variant hover:opacity-80 transition-opacity scale-98 active:scale-95 hidden sm:block">
+                <span class="material-symbols-outlined text-[24px]">help_outline</span>
+            </button>
+            <img alt="Administrator profile picture" class="w-8 h-8 rounded-full object-cover border border-white/20 ml-2" data-alt="A professional close up portrait of Alejandro, a friendly and experienced craftsman in a modern workshop setting, cinematic soft lighting, dark background, premium photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbiPZWvS4ZTOJB-kkKI0gMJYHJ74z_z4XY4W_mpeEtM8U7fqKt5vML_QNzT0y7gK6q_n2kuyTv0kHY7j5Sx091gLpbRgvFTq7AIEnCJpYvmEUm5N1mZYMcsPrmQniFg1rY7dBRayVIBl15v4OapP8mfhf9y4-q_vDUwlw5pUe5gfdS4Yf_9AN4GyaPWuqqauwS-wgY_aOk0nsRi0vq688pUOT7dRlY6N9kgHGyER2ubybag1xmK7wa7w"/>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="md:ml-64 pt-24 px-margin-mobile md:px-margin-desktop pb-lg min-h-screen">
+        <!-- 1. Greeting Header -->
+        <header class="mb-lg">
+            <h2 class="font-display text-display text-on-surface mb-2 tracking-tight">Hola, Alejandro</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Tu taller está funcionando de manera óptima. Tienes 5 herramientas prestadas y 3 solicitudes nuevas esperando tu aprobación hoy.</p>
+        </header>
+
+        <!-- 2. Metrics Bento Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-lg">
+            <!-- Metric 1: Ingresos -->
+            <div class="glass-panel rounded-xl p-md flex flex-col hover:scale-[1.02] hover:border-white/20 transition-all duration-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="font-label-md text-label-md text-on-surface-variant">Ingresos totales</span>
+                    <span class="material-symbols-outlined text-primary text-[24px]">payments</span>
+                </div>
+                <div class="font-headline-lg text-headline-lg text-on-surface">$1,240<span class="text-on-surface-variant text-[16px] ml-1 font-normal">USD</span></div>
+                <div class="mt-4 flex items-center gap-1 text-[#97BC62] font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                    <span>+12.5% este mes</span>
+                </div>
+            </div>
+            
+            <!-- Metric 2: Préstamos Activos -->
+            <div class="glass-panel rounded-xl p-md flex flex-col hover:scale-[1.02] hover:border-white/20 transition-all duration-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="font-label-md text-label-md text-on-surface-variant">Préstamos activos</span>
+                    <span class="material-symbols-outlined text-[#97BC62] text-[24px]">autorenew</span>
+                </div>
+                <div class="font-headline-lg text-headline-lg text-on-surface">5</div>
+                <div class="mt-4 flex items-center gap-2">
+                    <div class="flex -space-x-2">
+                        <img class="w-6 h-6 rounded-full border border-surface" data-alt="Close up face of a young woman smiling, professional portrait, soft workshop lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6ZA1-H18HNP5r_WPfJ1UchZWmpvv4DuFm7DUIMpv-rGy7nM56PO0_kTUHlXL45cWXoYrK03NPRO14Vq2kcQKC6NdLrCCQPsOR9WMUMzNh9EIBHp2ufbnBTum_N5tkio3rRCw2hETLK1_oGI5jioQjubkHrfSqPI1piZhnMBvYmf3fwgVveHOM6VeiC45Q90e7u2bNmOYnShSRynvQ3MGETlIAQIqRoYCOUD9g40u0-QX_EshBxzF3dQ"/>
+                        <img class="w-6 h-6 rounded-full border border-surface" data-alt="Close up face of a middle aged man with a beard, professional portrait, soft workshop lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHl0Cxqh2_oy_Ce--3qXgAOjvwvQKqsHDxGFoYUR1SscCAqktBQc_f0R01RvlJSKhhA7TJCAMNOsD9QMgPq2_mct9JVpSn5ywhF4dMVEgoHNkYKu1PY-6Stx53ZmtFQ9L-Iyu02O-Y7yCltBab9UqMGleHU0reqARYBTGXjMaJ3uIZKt9wKc43MTG7KdCVdsaR59buJuM8DeBNW1vNW5xZK-uyGKvxpn705ij0Fx4vBlcHJvCgsIqP-Q"/>
+                        <div class="w-6 h-6 rounded-full border border-surface bg-surface-variant flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant">+3</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metric 3: Reputación -->
+            <div class="glass-panel rounded-xl p-md flex flex-col hover:scale-[1.02] hover:border-white/20 transition-all duration-200 relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-container/20 rounded-full blur-2xl"></div>
+                <div class="flex items-center justify-between mb-4 relative z-10">
+                    <span class="font-label-md text-label-md text-on-surface-variant">Reputación</span>
+                    <span class="material-symbols-outlined text-[#FFD700] text-[24px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                </div>
+                <div class="font-headline-lg text-headline-lg text-on-surface relative z-10">4.9<span class="text-on-surface-variant text-[20px] font-normal">/5</span></div>
+                <div class="mt-4 flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm relative z-10">
+                    Basado en 42 reseñas
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Area: Requests + Table + Chart -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 3. Solicitudes Pendientes -->
+            <section class="lg:col-span-1 flex flex-col gap-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-headline-md text-headline-md text-on-surface">Solicitudes Pendientes</h3>
+                    <span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-0.5 rounded-full">3 Nuevas</span>
+                </div>
+                
+                <!-- Request Card 1 -->
+                <div class="glass-panel rounded-lg p-4 flex flex-col gap-3 relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of a cheerful neighbor named Carlos wearing casual clothes, standing outside a suburban home on a sunny day, high quality photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqDGaHEXEF8QEsspkiKECfvL7e9U2etEVMTwvxURtRn2MebqaNENmaJ5y6eox4rb37zBFTj-xJO5GUhXPMazuJMuYuNdyOsfdr79XAX5-mxxQIvsGlfnnEzxJxbLyEdLIPycMtyX-BTmsOmaeEq6o9d8PbOBIWhLPgyRKohilfXj4sPetc8aHYjjhC-HRNbSA5-X47Wp1vhAJ6wf5YX1lmdQ8bbctV3L5BCpiKWKvq4RNk5Mg8IJwyNw"/>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface font-medium">Carlos R.</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Vecino • a 200m</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 rounded p-2 border border-white/5">
+                        <p class="font-body-md text-body-md text-on-surface font-medium">Taladro Percutor Bosch</p>
+                        <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm mt-1">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span> 2 días
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-1">
+                        <button class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
+                        <button class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
+                    </div>
+                </div>
+                
+                <!-- Request Card 2 -->
+                <div class="glass-panel rounded-lg p-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of Maria, a creative female DIY enthusiast looking thoughtful in a crafting space, soft natural light, shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO0KWYbHmaxGFAvK66hkreQaJ5SgjmWaVVZHlhTg7JAun73KvgpVom7GQ5W-K-eemqsCy9jOygVCzSjnJVGiADOP-_6SyIE903api3MMBQQFS-WFTscrgqcq6j-8s60lcphR0cvLOFAvcA81RIq19NaN-GiJEAf0R3IvhCsfvTIUB_HqlIJsiQoxYqbPamWj6Y1bXi4NUWGJdp5aVXtOJlqKe5-1tcB7pk3dTrJOCMOUXGgxPySTpJJg"/>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface font-medium">Maria S.</p>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Vecina • a 500m</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 rounded p-2 border border-white/5">
+                        <p class="font-body-md text-body-md text-on-surface font-medium">Sierra Circular Makita</p>
+                        <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm mt-1">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span> 1 semana
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-1">
+                        <button class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
+                        <button class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Middle & Right Column: Tools Table & Chart -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <!-- 4. Mis Herramientas Table -->
+                <section class="glass-panel rounded-xl overflow-hidden flex flex-col">
+                    <div class="p-md border-b border-white/10 flex justify-between items-center">
+                        <h3 class="font-headline-md text-headline-md text-on-surface">Mis Herramientas</h3>
+                        <button class="text-primary hover:text-[#97BC62] font-label-md text-label-md flex items-center gap-1 transition-colors">
+                            Ver todas <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-black/20">
+                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Herramienta</th>
+                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Categoría</th>
+                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Estado</th>
+                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Ingresos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 font-body-md text-body-md text-on-surface">
+                                <!-- Row 1 -->
+                                <tr class="hover:bg-white/5 transition-colors group">
+                                    <td class="px-4 py-3 flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
+                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Bosch hammer drill on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOsj6Xa2QCT-9NVO--CKB2p3wOf62yS8M-ez0lZxH36keVT08byU7TDsmWFiSEM31dng9S449a5gKYF4_P5dbTykcRnd3PuhWa0V4_dC72-v3lSOSNq5_78qR3NR5UsoDOW0M1hP1x0fPGYoc0Op_huHsoxHK1Jh2HfT1ADyxV_Z3pTqrY1Exvz4WEzKvCkLxumWlpYXSNwwRJIUDwQvqtLt8XEKmPbev-KLGjN56h3IxeNF9LPnHSEg"/>
+                                        </div>
+                                        <span class="font-medium group-hover:text-primary transition-colors">Taladro Bosch</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-on-surface-variant">Eléctricas</td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>
+                                            Disponible
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">$45.00</td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr class="hover:bg-white/5 transition-colors group">
+                                    <td class="px-4 py-3 flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
+                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Makita circular saw on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTPnUVNBMB1rz8dBs4VSGM3hKAEe08VQ7c2OUU0GRMRUbku3YQ8Y4WuckqMW3GMUC9VnpiMuO4xerNC1VgVySaERbb4ZP2U6B0FEBritRkcxjo8YjB-TJ0lCG2zOrYA5uNtX6bQbX68P1kqTwWYfuJwJ_8-ZtZKzxXH8TkpEDQ4LLBUILe8xlzBGdmF4rkjaVlFE6I1qfBP9ZX-URKgB859-UMJs_VYG0W5I4HzUHF5INfS9acDPoJ9Q"/>
+                                        </div>
+                                        <span class="font-medium group-hover:text-primary transition-colors">Sierra Circular</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-on-surface-variant">Eléctricas</td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 text-white/70 font-label-sm text-label-sm border border-white/10">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-white/50 pulse-borrowed"></span>
+                                            Prestado
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">$120.00</td>
+                                </tr>
+                                <!-- Row 3 -->
+                                <tr class="hover:bg-white/5 transition-colors group">
+                                    <td class="px-4 py-3 flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
+                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Stanley socket wrench set in its case on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHpor9nwEORrya_GcTz5DmMS85DR1WvZwFD9Mj_h8AC9Uwgi-o4eNgJxbbhnrjvzcAHUv_Z6zA8DquUV5PyGhiLzV66QCPsKEPKSYBLv0rahP1a9MuiTrT8J5uA8kCgY7UjgFGimekA3pcIfQqAw8jyRDr0wyXwFBzwP_pmEJzfbZgC3CkmtTA4KbtXC2V_e7skMzLK-q26HJ1ng0VhtnIYHa9nx-96mt_cqi-flhL5l2dpxkPPya-UA"/>
+                                        </div>
+                                        <span class="font-medium group-hover:text-primary transition-colors">Set de Llaves</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-on-surface-variant">Manuales</td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>
+                                            Disponible
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">$15.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 5. Actividad Semanal Chart Area -->
+                <section class="glass-panel rounded-xl p-md flex flex-col">
+                    <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Actividad Semanal</h3>
+                    <!-- Abstract representation of a chart -->
+                    <div class="h-48 w-full flex items-end justify-between gap-2 px-2 border-l border-b border-white/10 pb-1 relative">
+                        <!-- Y-axis labels -->
+                        <div class="absolute -left-6 bottom-0 top-0 flex flex-col justify-between text-[10px] text-on-surface-variant py-1">
+                            <span>10</span>
+                            <span>5</span>
+                            <span>0</span>
+                        </div>
+                        <!-- Bars -->
+                        <div class="w-full bg-[#97BC62]/20 hover:bg-[#97BC62]/40 transition-colors rounded-t-sm" style="height: 40%;"></div>
+                        <div class="w-full bg-[#97BC62]/20 hover:bg-[#97BC62]/40 transition-colors rounded-t-sm" style="height: 65%;"></div>
+                        <div class="w-full bg-[#97BC62]/80 hover:bg-[#97BC62] transition-colors rounded-t-sm" style="height: 90%;"></div>
+                        <div class="w-full bg-[#97BC62]/20 hover:bg-[#97BC62]/40 transition-colors rounded-t-sm" style="height: 30%;"></div>
+                        <div class="w-full bg-[#97BC62]/20 hover:bg-[#97BC62]/40 transition-colors rounded-t-sm" style="height: 45%;"></div>
+                        <div class="w-full bg-[#97BC62]/20 hover:bg-[#97BC62]/40 transition-colors rounded-t-sm" style="height: 20%;"></div>
+                        <div class="w-full bg-[#97BC62]/50 hover:bg-[#97BC62]/70 transition-colors rounded-t-sm" style="height: 75%;"></div>
+                    </div>
+                    <!-- X-axis labels -->
+                    <div class="flex justify-between w-full px-2 mt-2 font-label-sm text-label-sm text-on-surface-variant">
+                        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

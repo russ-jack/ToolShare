@@ -1,107 +1,173 @@
 <!DOCTYPE html>
-<html lang="es">
+<html class="dark" lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolShare | Plataforma Vecinal</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ToolShare - Home</title>
     
-    <!-- Fuentes: Inter / Outfit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="tailwind.config.js"></script>
     
-    <!-- Íconos: Phosphor Icons (Ligeros y limpios) -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     
-    <link rel="stylesheet" href="styles.css">
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="dark-theme">
-    <!-- Navbar flotante con Glassmorphism -->
-    <nav class="navbar glass">
-        <div class="nav-content container">
-            <a href="#" class="logo">
-                <i class="ph ph-wrench"></i>
-                ToolShare
-            </a>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="icon-btn" aria-label="Cambiar tema">
-                    <i class="ph ph-sun"></i>
-                </button>
-                <div class="user-profile">
-                    <img src="https://i.pravatar.cc/150?img=11" alt="Perfil" class="avatar">
-                </div>
+<body class="text-on-surface antialiased min-h-screen pb-24 md:pb-0">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 left-0 w-full flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 z-50 bg-white/5 backdrop-blur-lg border-b border-white/10 shadow-2xl">
+        <div class="font-display text-headline-md-mobile md:text-headline-md text-primary tracking-tight">ToolShare</div>
+        <div class="flex items-center gap-sm">
+            <button class="text-on-surface-variant hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 transition-transform hidden">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'wght' 300;">search</span>
+            </button>
+            <button class="text-on-surface-variant hover:bg-white/10 transition-colors p-2 rounded-full active:scale-95 transition-transform">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'wght' 300;">notifications</span>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden ml-2 cursor-pointer border border-white/10">
+                <img alt="User profile" class="w-full h-full object-cover" data-alt="A macro photography style close up of a diverse individual's face, warmly lit in a premium dark mode environment, serving as a high end user profile picture avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrUpYEx51DkFZej9cE-k9F8WIjZPu7bZnweVIThQrwO8feX5apjUDcDEiYQEVRucBm1Ygu8CV6rzrEoy5TbNgAi4CekpraYuUScNeBaNOElyzvGuhuLLoo7-icY_JpV2Dgfwg1ALIV-hbbcelxbi54wIXiiwM0oQPaLDyoNiASA_x2C3GHbHVcBP2cFy31EmlNz1TLF29MlJkMj5UPtE6oyKCCGsSjh0hTQGivNUtA5fi7nJwSA7SniQ"/>
             </div>
         </div>
     </nav>
 
-    <main class="container">
+    <main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
         <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-badge glass">
-                <span class="pulse-dot"></span> Economía colaborativa hiperlocal
-            </div>
-            <h1>Las herramientas que necesitas,<br>a pocas cuadras de distancia.</h1>
-            <p>Presta, pide prestado y construye comunidad de manera sostenible.</p>
+        <section class="mt-lg mb-lg text-center md:text-left">
+            <h1 class="font-display text-display text-on-surface mb-md max-w-3xl">Herramientas compartidas, <br class="hidden md:block"/>progreso vecinal</h1>
             
-            <div class="search-bar glass">
-                <i class="ph ph-magnifying-glass"></i>
-                <input type="text" placeholder="¿Qué necesitas hoy? Ej. Taladro percutor..." id="search-input">
-                <button class="btn-primary">Buscar</button>
+            <!-- Search Bar -->
+            <div class="glass-panel rounded-full p-2 flex items-center max-w-2xl mx-auto md:mx-0 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                <span class="material-symbols-outlined text-primary ml-sm mr-xs">search</span>
+                <input class="bg-transparent border-none focus:ring-0 text-on-surface font-body-lg w-full placeholder-on-surface-variant/50" placeholder="¿Qué necesitas hoy? Ej: Taladro, Escalera..." type="text"/>
             </div>
         </section>
 
-        <!-- Filtros Rápidos -->
-        <section class="filters-section">
-            <div class="filters" id="filters-container">
-                <button class="chip active">Todos</button>
-                <button class="chip"><i class="ph ph-leaf"></i> Jardinería</button>
-                <button class="chip"><i class="ph ph-hammer"></i> Carpintería</button>
-                <button class="chip"><i class="ph ph-wrench"></i> Mecánica</button>
-                <button class="chip"><i class="ph ph-paint-roller"></i> Pintura</button>
+        <!-- Filter Chips -->
+        <section class="mb-sm">
+            <div class="flex overflow-x-auto hide-scrollbar gap-sm py-2 px-1">
+                <button class="px-md py-xs rounded-full bg-primary/20 border border-primary text-primary font-label-md whitespace-nowrap shadow-[0_0_15px_rgba(151,188,98,0.2)]">Todos</button>
+                <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Construcción</button>
+                <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Jardinería</button>
+                <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Pintura</button>
+                <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Limpieza</button>
+                <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Automotriz</button>
             </div>
         </section>
 
-        <!-- Mapa / Info de Zona -->
-        <section class="zone-info glass">
-            <div class="zone-details">
-                <div class="zone-icon"><i class="ph ph-map-pin"></i></div>
-                <div>
-                    <h3>Explorando tu vecindario</h3>
-                    <p>Mostrando resultados en un radio de <strong>2 km</strong></p>
+        <!-- Radius Banner -->
+        <section class="mb-lg">
+            <div class="glass-panel rounded-lg py-xs px-md flex items-center justify-center md:justify-start gap-2 border-l-2 border-l-primary/50">
+                <span class="material-symbols-outlined text-on-surface-variant text-[18px]">location_on</span>
+                <p class="font-body-md text-on-surface-variant text-sm">Buscando en un radio de 2km a tu alrededor</p>
+            </div>
+        </section>
+
+        <!-- Tool Grid -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter mb-xl">
+            <!-- Card 1 -->
+            <div class="glass-card rounded-xl overflow-hidden cursor-pointer group flex flex-col h-full">
+                <div class="relative h-48 md:h-56 w-full overflow-hidden">
+                    <img alt="Taladro Percutor" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A high-end product photography shot of a professional green Bosch hammer drill resting on a dark concrete surface. The lighting is cinematic and moody, highlighting the texture and robust build of the tool against a deep black background, fitting a premium digital platform aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgFMzvwpz-agMDivsChCp6IlCUQ7GA2Bp1-fYpaIQKz_XFqLBzng9dWgST0YRq6u9y9ETBLQTG4-1TkhC2eAImcwQoysQdYihAw_CLdgQV7c8HjOHTFPDb-2w7xtxqQAshKBgs9zDUdz5PHn5U7KvGxUY9ZkznLv1_GKTrn9TsVmw2YwjADoTx-7b4ejgwz8UEswa_naIw04B7nDs6gx9BCPvDK3vuPPK5Y4wvYCuQAMsMgWn805L0lg"/>
+                    <div class="absolute top-sm right-sm bg-surface/80 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-2 border border-white/10 shadow-lg">
+                        <div class="w-2 h-2 rounded-full pulse-dot"></div>
+                        <span class="font-label-sm text-on-surface">Disponible</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-headline-md text-on-surface mb-1">Taladro Percutor Bosch</h3>
+                        <p class="font-body-md text-on-surface-variant line-clamp-2 mb-sm">Ideal para concreto y mampostería. Incluye set de brocas básico.</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto pt-sm border-t border-white/5">
+                        <div class="flex items-center gap-1 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[16px]">directions_walk</span>
+                            <span class="font-label-md text-xs">A 3 cuadras</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-md text-sm text-on-surface">4.9 <span class="text-on-surface-variant">(24)</span></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="btn-secondary">Ver mapa interactivo <i class="ph ph-arrow-right"></i></button>
-        </section>
-
-        <!-- Catálogo de Herramientas -->
-        <section class="catalog-section">
-            <div class="section-header">
-                <h2>Herramientas destacadas</h2>
-                <div class="sort-dropdown">
-                    <span class="text-sm text-secondary">Ordenar por:</span>
-                    <select class="glass">
-                        <option>Más cercanas</option>
-                        <option>Mejor valoradas</option>
-                        <option>Disponibles ahora</option>
-                    </select>
+            
+            <!-- Card 2 -->
+            <div class="glass-card rounded-xl overflow-hidden cursor-pointer group flex flex-col h-full">
+                <div class="relative h-48 md:h-56 w-full overflow-hidden">
+                    <img alt="Escalera" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An elegant, dramatic shot of a heavy-duty aluminum folding ladder leaning against a dark, textured wall. Subtle edge lighting catches the metallic rungs. The overall scene is dark and premium, emphasizing utility and industrial design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0EBlfURFRLDMeAU8Zde-PLgkHPmvh8y46PWJI_OT5Zq_QPCfAh17e1ahTvwpOM58YH_CRaWZJx5Wb_MVtHfxq3NFj6Lc1R6h8N-1hLUNo8T8wYs-EQXgbtNmxS4z8anb0VnLGMNWRD7A_Ssx84h06o9yX1deGox99InpZVgkangfOGavg6fYz4Tu4BN9EjaNp_a5xc6FKsLqEJTIyZVMHLz_wcq_II1L2R7l_PLxAcP3gLCEr1mv7NQ"/>
+                    <div class="absolute top-sm right-sm bg-surface/80 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-2 border border-white/10 shadow-lg">
+                        <div class="w-2 h-2 rounded-full pulse-dot"></div>
+                        <span class="font-label-sm text-on-surface">Disponible</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-headline-md text-on-surface mb-1">Escalera Telescópica 3m</h3>
+                        <p class="font-body-md text-on-surface-variant line-clamp-2 mb-sm">Aluminio ultraligero, soporta hasta 150kg. Fácil de transportar.</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto pt-sm border-t border-white/5">
+                        <div class="flex items-center gap-1 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[16px]">directions_walk</span>
+                            <span class="font-label-md text-xs">A 5 cuadras</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-md text-sm text-on-surface">5.0 <span class="text-on-surface-variant">(12)</span></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="catalog-grid" id="catalog-grid">
-                <!-- Las tarjetas se generan vía JavaScript (main.js) -->
+            <!-- Card 3 -->
+            <div class="glass-card rounded-xl overflow-hidden cursor-pointer group flex flex-col h-full">
+                <div class="relative h-48 md:h-56 w-full overflow-hidden">
+                    <img alt="Sierra Circular" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A sleek circular saw resting on a dark wooden workbench, illuminated by a soft, directional spotlight that accentuates its sharp blade and metallic guard. The environment is a deep, luxurious black, reflecting a high-end craftsman aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk1rEOkIIN0LDnT6Y1Qw3UA0QnNhlfRIbds_plFYTlBtzCzrIOkrU-BgUv9IhIiK5DjVZtcJgxwc1pLf81bFLmSfZ3HaLF0FR6jXVvJMgbK1og_H1KDrUPWkQxy4xKc2CvTpzrw9meJjheHaIzsUQi9ucJyJzlsGUbic18vFZ6EOPs6pf9qZbEJbNIf4ipnlrpWIdLuyNaTCoDIRbrrmYeW5cYwyNxyJ7SXoqXgcIQsQORoPBxLPzsmQ"/>
+                    <div class="absolute top-sm right-sm bg-surface/80 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-2 border border-white/10 shadow-lg">
+                        <div class="w-2 h-2 rounded-full pulse-dot"></div>
+                        <span class="font-label-sm text-on-surface">Disponible</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-headline-md text-on-surface mb-1">Sierra Circular Makita</h3>
+                        <p class="font-body-md text-on-surface-variant line-clamp-2 mb-sm">Corte preciso para madera. 1500W de potencia.</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto pt-sm border-t border-white/5">
+                        <div class="flex items-center gap-1 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-[16px]">directions_walk</span>
+                            <span class="font-label-md text-xs">A 1 km</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-md text-sm text-on-surface">4.7 <span class="text-on-surface-variant">(38)</span></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer glass">
-        <div class="container footer-content">
-            <div class="footer-logo">
-                <i class="ph ph-wrench"></i> ToolShare
-            </div>
-            <p class="text-sm text-secondary">&copy; 2026 Plataforma Vecinal. Avance de Proyecto I.</p>
-        </div>
-    </footer>
-
-    <script src="main.js"></script>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface/80 backdrop-blur-xl border-t border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.4)] rounded-t-xl md:hidden">
+        <button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full p-2 active:scale-90 transition-all duration-200">
+            <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">search</span>
+            <span class="font-label-sm text-label-sm">Explore</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200" onclick="window.location.href='dashboard.html'">
+            <span class="material-symbols-outlined mb-1">handyman</span>
+            <span class="font-label-sm text-label-sm">My Tools</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+            <span class="material-symbols-outlined mb-1">chat_bubble</span>
+            <span class="font-label-sm text-label-sm">Messages</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90 duration-200">
+            <span class="material-symbols-outlined mb-1">person</span>
+            <span class="font-label-sm text-label-sm">Profile</span>
+        </button>
+    </nav>
 </body>
 </html>
