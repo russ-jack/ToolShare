@@ -81,3 +81,27 @@ body {
 .pulse-borrowed { 
     animation: pulseWhite 2s infinite; 
 }
+
+/* --------------------------------------------------------------------------
+   Login Specific Classes
+   -------------------------------------------------------------------------- */
+.bg-gradient-organic {
+    background: radial-gradient(circle at top right, rgba(44, 95, 45, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(151, 188, 98, 0.05) 0%, transparent 40%);
+}
+
+.glass-input {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-input:focus {
+    border-color: #97BC62;
+    outline: none;
+    box-shadow: 0 0 0 1px #97BC62;
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
