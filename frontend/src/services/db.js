@@ -157,3 +157,33 @@ export async function deleteToolBackend(id) {
         if (fbIndex !== -1) fallbackTools.splice(fbIndex, 1);
     }
 }
+
+// Actualizar Herramienta
+export async function updateToolBackend(id, updatedData) {
+    const backendTool = {
+        name: updatedData.title,
+        category: updatedData.category,
+        price: updatedData.price || 0,
+        description: updatedData.description || '',
+        status: updatedData.status === 'available' ? 'Disponible' : 'En préstamo',
+        image: updatedData.image
+    };
+
+    try {
+        await fetchAPI(`/tools/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(backendTool)
+        });
+        await fetchToolsFromAPI();
+    } catch (e) {
+        // Fallback
+        const updateInArray = (arr) => {
+            const index = arr.findIndex(t => t.id === id);
+            if (index !== -1) {
+                arr[index] = { ...arr[index], ...updatedData };
+            }
+        };
+        updateInArray(cachedTools);
+        updateInArray(fallbackTools);
+    }
+}
