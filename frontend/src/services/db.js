@@ -83,17 +83,24 @@ const initialData = {
 
 // --- CORE DB LOGIC ---
 
-// Inicializar DB si está vacía
 export function initDB() {
-    if (!localStorage.getItem(DB_KEY)) {
+    try {
+        const data = localStorage.getItem(DB_KEY);
+        if (!data) throw new Error("Empty DB");
+        const parsed = JSON.parse(data);
+        if (!parsed || !parsed.tools) throw new Error("Corrupted DB");
+    } catch (e) {
         localStorage.setItem(DB_KEY, JSON.stringify(initialData));
     }
 }
 
-// Leer DB
 export function getDB() {
     initDB();
-    return JSON.parse(localStorage.getItem(DB_KEY));
+    try {
+        return JSON.parse(localStorage.getItem(DB_KEY)) || initialData;
+    } catch (e) {
+        return initialData;
+    }
 }
 
 // Escribir DB
