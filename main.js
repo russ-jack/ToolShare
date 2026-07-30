@@ -410,11 +410,15 @@ function showAddToolModal(onSubmit) {
                     <option value="Manuales">Manuales</option>
                 </select>
             </div>
-            <div>
-                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">URL de la Imagen</label>
-                <input id="tool-image" type="url" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="https://ejemplo.com/foto.jpg">
+            <div class="mb-4">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Imagen de la Herramienta (Opcional)</label>
+                <div class="relative group">
+                    <input id="tool-image" type="file" accept="image/*" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-all cursor-pointer">
+                    <p class="text-[11px] text-on-surface-variant mt-1">Si no subes una, usaremos una imagen profesional por defecto.</p>
+                </div>
             </div>
-            <div>
+            
+            <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día (USD)</label>
                 <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="15">
             </div>
@@ -454,15 +458,30 @@ function showAddToolModal(onSubmit) {
     modal.querySelector('#btn-submit').onclick = () => {
         const title = modal.querySelector('#tool-name').value.trim();
         const category = modal.querySelector('#tool-category').value;
-        const imageUrl = modal.querySelector('#tool-image').value.trim() || 'https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800';
-        const price = modal.querySelector('#tool-price').value || 15;
+        const price = parseFloat(modal.querySelector('#tool-price').value) || 15.00;
+        const imageInput = modal.querySelector('#tool-image');
         
         if (!title) {
             showToast('El nombre es obligatorio', 'error');
             return;
         }
-        onSubmit({ title, category, image: imageUrl, price });
-        close();
+
+        // Manejar subida de imagen con FileReader
+        const file = imageInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Image = e.target.result;
+                onSubmit({ title, category, image: base64Image, price });
+                close();
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Imagen por defecto si no se sube nada
+            const defaultImage = 'https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800';
+            onSubmit({ title, category, image: defaultImage, price });
+            close();
+        }
     };
 }
 
