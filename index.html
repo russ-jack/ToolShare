@@ -41,13 +41,13 @@
             <!-- Search Bar -->
             <div class="glass-panel rounded-full p-2 flex items-center max-w-2xl mx-auto md:mx-0 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
                 <span class="material-symbols-outlined text-primary ml-sm mr-xs">search</span>
-                <input class="bg-transparent border-none focus:ring-0 text-on-surface font-body-lg w-full placeholder-on-surface-variant/50" placeholder="¿Qué necesitas hoy? Ej: Taladro, Escalera..." type="text"/>
+                <input id="search-input" class="bg-transparent border-none focus:ring-0 text-on-surface font-body-lg w-full placeholder-on-surface-variant/50" placeholder="¿Qué necesitas hoy? Ej: Taladro, Escalera..." type="text"/>
             </div>
         </section>
 
         <!-- Filter Chips -->
         <section class="mb-sm">
-            <div class="flex overflow-x-auto hide-scrollbar gap-sm py-2 px-1">
+            <div id="filters-container" class="flex overflow-x-auto hide-scrollbar gap-sm py-2 px-1">
                 <button class="px-md py-xs rounded-full bg-primary/20 border border-primary text-primary font-label-md whitespace-nowrap shadow-[0_0_15px_rgba(151,188,98,0.2)]">Todos</button>
                 <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Construcción</button>
                 <button class="px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap">Jardinería</button>

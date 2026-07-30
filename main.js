@@ -69,22 +69,21 @@ function setupThemeToggle() {
 
 // 3. Manejo de Filtros (Home)
 function setupFilters(allTools) {
-    const filtersContainer = document.querySelector('.flex.overflow-x-auto'); // El contenedor de chips
+    const filtersContainer = document.getElementById('filters-container');
     if (!filtersContainer) return;
     
     const chips = filtersContainer.querySelectorAll('button');
     
     chips.forEach(chip => {
         chip.addEventListener('click', (e) => {
-            // Estilos de activo
+            // Estilos inactivos para todos
             chips.forEach(c => {
-                c.classList.remove('bg-primary/20', 'border-primary', 'text-primary', 'shadow-[0_0_15px_rgba(151,188,98,0.2)]');
-                c.classList.add('glass-panel', 'text-on-surface-variant');
+                c.className = 'px-md py-xs rounded-full glass-panel text-on-surface-variant font-label-md hover:text-on-surface transition-colors whitespace-nowrap';
             });
             
+            // Estilos activos para el seleccionado
             const target = e.currentTarget;
-            target.classList.remove('glass-panel', 'text-on-surface-variant');
-            target.classList.add('bg-primary/20', 'border-primary', 'text-primary', 'shadow-[0_0_15px_rgba(151,188,98,0.2)]');
+            target.className = 'px-md py-xs rounded-full bg-primary/20 border border-primary text-primary font-label-md whitespace-nowrap shadow-[0_0_15px_rgba(151,188,98,0.2)]';
             
             const category = target.textContent.trim();
             
@@ -100,7 +99,7 @@ function setupFilters(allTools) {
 
 // 4. Lógica de Búsqueda (Home)
 function setupSearch(allTools) {
-    const searchInput = document.querySelector('.search-bar input, .glass-panel input[type="text"]');
+    const searchInput = document.getElementById('search-input');
     if (!searchInput) return;
 
     searchInput.addEventListener('input', (e) => {
@@ -178,7 +177,7 @@ function setupDashboard() {
 }
 
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
     const path = window.location.pathname;
     
     // Ejecutar lógica según la página actual
@@ -196,4 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupSearch(toolsData);
         setupThemeToggle();
     }
-});
+}
+
+// Dado que los scripts están al final del body, podemos ejecutar de inmediato
+initApp();
