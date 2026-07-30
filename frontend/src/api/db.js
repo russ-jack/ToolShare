@@ -84,32 +84,32 @@ const initialData = {
 // --- CORE DB LOGIC ---
 
 // Inicializar DB si está vacía
-function initDB() {
+export function initDB() {
     if (!localStorage.getItem(DB_KEY)) {
         localStorage.setItem(DB_KEY, JSON.stringify(initialData));
     }
 }
 
 // Leer DB
-function getDB() {
+export function getDB() {
     initDB();
     return JSON.parse(localStorage.getItem(DB_KEY));
 }
 
 // Escribir DB
-function saveDB(data) {
+export function saveDB(data) {
     localStorage.setItem(DB_KEY, JSON.stringify(data));
 }
 
 // --- APP API ---
 
 // Listar herramientas
-function getTools() {
+export function getTools() {
     return getDB().tools;
 }
 
 // Agregar nueva herramienta (Funciona en la presentación)
-function addTool(tool) {
+export function addTool(tool) {
     const db = getDB();
     tool.id = Date.now(); // ID dinámico
     db.tools.unshift(tool); // Agregar al inicio de la lista
@@ -117,7 +117,7 @@ function addTool(tool) {
 }
 
 // Login
-function loginUser(email) {
+export function loginUser(email) {
     const db = getDB();
     // Cualquier login entra como el usuario admin (Alejandro) para la demo
     db.currentUser = db.users[0];
@@ -126,14 +126,14 @@ function loginUser(email) {
 }
 
 // Cerrar sesión
-function logoutUser() {
+export function logoutUser() {
     const db = getDB();
     db.currentUser = null;
     saveDB(db);
 }
 
 // Revisar sesión activa
-function getCurrentUser() {
+export function getCurrentUser() {
     return getDB().currentUser;
 }
 

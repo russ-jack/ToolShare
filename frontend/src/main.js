@@ -2,6 +2,8 @@
  * ToolShare - Lógica Principal (Vanilla JS) + LocalStorage DB
  */
 
+import { getDB, saveDB, getTools, getCurrentUser, loginUser, logoutUser, addTool, deleteTool } from './api/db.js';
+
 // 1. Renderizar Catálogo (Home)
 function renderCatalog(data) {
     const grid = document.getElementById('catalog-grid');
