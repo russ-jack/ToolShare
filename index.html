@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolShare | Plataforma Vecinal</title>
+    
+    <!-- Fuentes: Inter / Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Íconos: Phosphor Icons (Ligeros y limpios) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Navbar flotante con Glassmorphism -->
+    <nav class="navbar glass">
+        <div class="nav-content container">
+            <a href="#" class="logo">
+                <i class="ph ph-wrench"></i>
+                ToolShare
+            </a>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Cambiar tema">
+                    <i class="ph ph-sun"></i>
+                </button>
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Perfil" class="avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge glass">
+                <span class="pulse-dot"></span> Economía colaborativa hiperlocal
+            </div>
+            <h1>Las herramientas que necesitas,<br>a pocas cuadras de distancia.</h1>
+            <p>Presta, pide prestado y construye comunidad de manera sostenible.</p>
+            
+            <div class="search-bar glass">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" placeholder="¿Qué necesitas hoy? Ej. Taladro percutor..." id="search-input">
+                <button class="btn-primary">Buscar</button>
+            </div>
+        </section>
+
+        <!-- Filtros Rápidos -->
+        <section class="filters-section">
+            <div class="filters" id="filters-container">
+                <button class="chip active">Todos</button>
+                <button class="chip"><i class="ph ph-leaf"></i> Jardinería</button>
+                <button class="chip"><i class="ph ph-hammer"></i> Carpintería</button>
+                <button class="chip"><i class="ph ph-wrench"></i> Mecánica</button>
+                <button class="chip"><i class="ph ph-paint-roller"></i> Pintura</button>
+            </div>
+        </section>
+
+        <!-- Mapa / Info de Zona -->
+        <section class="zone-info glass">
+            <div class="zone-details">
+                <div class="zone-icon"><i class="ph ph-map-pin"></i></div>
+                <div>
+                    <h3>Explorando tu vecindario</h3>
+                    <p>Mostrando resultados en un radio de <strong>2 km</strong></p>
+                </div>
+            </div>
+            <button class="btn-secondary">Ver mapa interactivo <i class="ph ph-arrow-right"></i></button>
+        </section>
+
+        <!-- Catálogo de Herramientas -->
+        <section class="catalog-section">
+            <div class="section-header">
+                <h2>Herramientas destacadas</h2>
+                <div class="sort-dropdown">
+                    <span class="text-sm text-secondary">Ordenar por:</span>
+                    <select class="glass">
+                        <option>Más cercanas</option>
+                        <option>Mejor valoradas</option>
+                        <option>Disponibles ahora</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="catalog-grid" id="catalog-grid">
+                <!-- Las tarjetas se generan vía JavaScript (main.js) -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer glass">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <i class="ph ph-wrench"></i> ToolShare
+            </div>
+            <p class="text-sm text-secondary">&copy; 2026 Plataforma Vecinal. Avance de Proyecto I.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
