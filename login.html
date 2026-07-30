@@ -55,7 +55,7 @@
             </div>
             
             <!-- Form -->
-            <form class="flex flex-col gap-md" onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
+            <form id="login-form" class="flex flex-col gap-md">
                 <div class="flex flex-col gap-xs">
                     <label class="font-label-md text-label-md text-on-surface" for="email">Correo electrónico</label>
                     <input class="glass-input w-full rounded-lg py-sm px-md text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/50 transition-all duration-200" id="email" placeholder="nombre@vecindario.com" required="" type="email"/>
@@ -93,5 +93,7 @@
             © 2026 ToolShare Ecosystem. Todos los derechos reservados.
         </div>
     </footer>
+    <script src="db.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
