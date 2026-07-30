@@ -174,8 +174,8 @@
                         </div>
                     </div>
                     <div class="flex gap-2 mt-1">
-                        <button class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
-                        <button class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
+                        <button onclick="this.closest('.glass-panel').remove(); alert('Solicitud procesada con éxito');" class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
+                        <button onclick="this.closest('.glass-panel').remove(); alert('Solicitud procesada con éxito');" class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
                     </div>
                 </div>
                 
@@ -197,8 +197,8 @@
                         </div>
                     </div>
                     <div class="flex gap-2 mt-1">
-                        <button class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
-                        <button class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
+                        <button onclick="this.closest('.glass-panel').remove(); alert('Solicitud procesada con éxito');" class="flex-1 bg-transparent border border-error text-error py-1.5 rounded-md font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
+                        <button onclick="this.closest('.glass-panel').remove(); alert('Solicitud procesada con éxito');" class="flex-1 bg-[#97BC62] text-[#01390c] py-1.5 rounded-md font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
                     </div>
                 </div>
             </section>
@@ -220,61 +220,11 @@
                                     <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Herramienta</th>
                                     <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Categoría</th>
                                     <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Estado</th>
-                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Ingresos</th>
+                                    <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-white/5 font-body-md text-body-md text-on-surface">
-                                <!-- Row 1 -->
-                                <tr class="hover:bg-white/5 transition-colors group">
-                                    <td class="px-4 py-3 flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
-                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Bosch hammer drill on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOsj6Xa2QCT-9NVO--CKB2p3wOf62yS8M-ez0lZxH36keVT08byU7TDsmWFiSEM31dng9S449a5gKYF4_P5dbTykcRnd3PuhWa0V4_dC72-v3lSOSNq5_78qR3NR5UsoDOW0M1hP1x0fPGYoc0Op_huHsoxHK1Jh2HfT1ADyxV_Z3pTqrY1Exvz4WEzKvCkLxumWlpYXSNwwRJIUDwQvqtLt8XEKmPbev-KLGjN56h3IxeNF9LPnHSEg"/>
-                                        </div>
-                                        <span class="font-medium group-hover:text-primary transition-colors">Taladro Bosch</span>
-                                    </td>
-                                    <td class="px-4 py-3 text-on-surface-variant">Eléctricas</td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>
-                                            Disponible
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-right">$45.00</td>
-                                </tr>
-                                <!-- Row 2 -->
-                                <tr class="hover:bg-white/5 transition-colors group">
-                                    <td class="px-4 py-3 flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
-                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Makita circular saw on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTPnUVNBMB1rz8dBs4VSGM3hKAEe08VQ7c2OUU0GRMRUbku3YQ8Y4WuckqMW3GMUC9VnpiMuO4xerNC1VgVySaERbb4ZP2U6B0FEBritRkcxjo8YjB-TJ0lCG2zOrYA5uNtX6bQbX68P1kqTwWYfuJwJ_8-ZtZKzxXH8TkpEDQ4LLBUILe8xlzBGdmF4rkjaVlFE6I1qfBP9ZX-URKgB859-UMJs_VYG0W5I4HzUHF5INfS9acDPoJ9Q"/>
-                                        </div>
-                                        <span class="font-medium group-hover:text-primary transition-colors">Sierra Circular</span>
-                                    </td>
-                                    <td class="px-4 py-3 text-on-surface-variant">Eléctricas</td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 text-white/70 font-label-sm text-label-sm border border-white/10">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-white/50 pulse-borrowed"></span>
-                                            Prestado
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-right">$120.00</td>
-                                </tr>
-                                <!-- Row 3 -->
-                                <tr class="hover:bg-white/5 transition-colors group">
-                                    <td class="px-4 py-3 flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
-                                            <img class="w-full h-full object-cover" data-alt="A clean, professional product shot of a Stanley socket wrench set in its case on a dark modern background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHpor9nwEORrya_GcTz5DmMS85DR1WvZwFD9Mj_h8AC9Uwgi-o4eNgJxbbhnrjvzcAHUv_Z6zA8DquUV5PyGhiLzV66QCPsKEPKSYBLv0rahP1a9MuiTrT8J5uA8kCgY7UjgFGimekA3pcIfQqAw8jyRDr0wyXwFBzwP_pmEJzfbZgC3CkmtTA4KbtXC2V_e7skMzLK-q26HJ1ng0VhtnIYHa9nx-96mt_cqi-flhL5l2dpxkPPya-UA"/>
-                                        </div>
-                                        <span class="font-medium group-hover:text-primary transition-colors">Set de Llaves</span>
-                                    </td>
-                                    <td class="px-4 py-3 text-on-surface-variant">Manuales</td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>
-                                            Disponible
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-right">$15.00</td>
-                                </tr>
+                            <tbody id="dashboard-tools-tbody" class="divide-y divide-white/5 font-body-md text-body-md text-on-surface">
+                                <!-- Dynamic content rendered by JS -->
                             </tbody>
                         </table>
                     </div>

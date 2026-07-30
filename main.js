@@ -139,6 +139,9 @@ function setupDashboard() {
         return;
     }
 
+    // Renderizar la tabla de herramientas dinámicamente
+    renderDashboardTools();
+
     const btnAddTool = document.getElementById('btn-add-tool');
     if (!btnAddTool) return;
     
@@ -163,7 +166,7 @@ function setupDashboard() {
         // Guardar en la "Base de Datos" (LocalStorage)
         addTool(newTool);
         
-        alert("¡Herramienta publicada con éxito en LocalStorage! Ve al Home para verla.");
+        alert("¡Herramienta publicada con éxito en LocalStorage!");
         window.location.reload(); // Recargar para ver contadores actualizados
     });
     
@@ -174,6 +177,44 @@ function setupDashboard() {
         const borrowedCount = tools.filter(t => t.status === 'borrowed').length;
         activeLoans.textContent = borrowedCount;
     }
+}
+
+// 7. Renderizar herramientas en Dashboard
+function renderDashboardTools() {
+    const tbody = document.getElementById('dashboard-tools-tbody');
+    if (!tbody) return;
+
+    const tools = getTools();
+    tbody.innerHTML = '';
+
+    if (tools.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-on-surface-variant">No tienes herramientas publicadas.</td></tr>';
+        return;
+    }
+
+    tools.forEach(tool => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-white/5 transition-colors group';
+        
+        const statusBadge = tool.status === 'available' 
+            ? `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20"><span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>Disponible</span>`
+            : `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 text-white/70 font-label-sm text-label-sm border border-white/10"><span class="w-1.5 h-1.5 rounded-full bg-white/50 pulse-borrowed"></span>Prestado</span>`;
+
+        tr.innerHTML = `
+            <td class="px-4 py-3 flex items-center gap-3">
+                <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
+                    <img class="w-full h-full object-cover" alt="${tool.title}" src="${tool.image}"/>
+                </div>
+                <span class="font-medium group-hover:text-primary transition-colors">${tool.title}</span>
+            </td>
+            <td class="px-4 py-3 text-on-surface-variant">${tool.category}</td>
+            <td class="px-4 py-3">${statusBadge}</td>
+            <td class="px-4 py-3 text-right">
+                <button onclick="deleteTool(${tool.id})" class="text-error hover:bg-error/10 p-2 rounded-full transition-colors" title="Eliminar"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 }
 
 // --- ENRUTAMIENTO BÁSICO FRONTEND ---

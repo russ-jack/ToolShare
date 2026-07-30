@@ -101,6 +101,16 @@ body {
     box-shadow: 0 0 0 1px #97BC62;
 }
 
+/* Fix autofill in dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #1e1f26 inset !important;
+    -webkit-text-fill-color: #e2e1eb !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .btn-glass {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
