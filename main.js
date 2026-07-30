@@ -399,7 +399,7 @@ function showAddToolModal(onSubmit, tool = null) {
         <div class="space-y-4 mb-6">
             <div>
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Nombre de la herramienta</label>
-                <input id="tool-name" type="text" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: Taladro Percutor">
+                <input id="tool-name" type="text" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 bg-[#0c0e14]" placeholder="Ej: Taladro Percutor">
             </div>
             <div>
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Categoría</label>
@@ -415,20 +415,20 @@ function showAddToolModal(onSubmit, tool = null) {
             <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Imagen de la Herramienta (Opcional)</label>
                 <div class="relative group">
-                    <input id="tool-image" type="file" accept="image/*" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-all cursor-pointer">
+                    <input id="tool-image" type="file" accept="image/*" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 bg-[#0c0e14] file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-all cursor-pointer">
                     <p class="text-[11px] text-on-surface-variant mt-1">Si no subes una, usaremos una imagen profesional por defecto.</p>
                 </div>
             </div>
             
             <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Precio por Día</label>
-                <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10" placeholder="Ej: 15.00" value="${isEdit ? tool.price : '15'}">
+                <input id="tool-price" type="number" class="w-full glass-input rounded-lg py-2 px-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 bg-[#0c0e14]" placeholder="Ej: 15.00" value="${isEdit ? tool.price : '15'}">
             </div>
             <div class="mb-4">
                 <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Disponibilidad de la Herramienta</label>
                 <div class="relative">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">date_range</span>
-                    <input id="tool-date-range" type="text" placeholder="Selecciona desde cuándo hasta cuándo..." class="w-full glass-input rounded-lg py-2 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 cursor-pointer" readonly>
+                    <input id="tool-date-range" type="text" placeholder="Selecciona desde cuándo hasta cuándo..." class="w-full glass-input rounded-lg py-2 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 cursor-pointer bg-[#0c0e14]" readonly>
                 </div>
             </div>
         </div>
