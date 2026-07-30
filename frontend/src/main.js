@@ -593,8 +593,10 @@ window.openToolModal = function(id) {
             <div class="mb-6">
                 <h4 class="font-label-md text-label-md text-on-surface mb-2 flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">calendar_month</span> Disponibilidad</h4>
                 <div class="flex gap-2 text-label-sm text-on-surface-variant bg-white/5 p-3 rounded-lg border border-white/5">
-                    <span class="w-2 h-2 rounded-full bg-error mt-1.5"></span>
-                    <p>Reservada del <strong>12 al 15 de este mes</strong>. Resto del mes disponible.</p>
+                    ${tool.status === 'available' 
+                        ? `<span class="w-2 h-2 rounded-full bg-[#97BC62] mt-1.5 shadow-[0_0_8px_#97BC62]"></span><p>Totalmente disponible. ¡Puedes solicitarla ahora mismo!</p>`
+                        : `<span class="w-2 h-2 rounded-full bg-error mt-1.5"></span><p>Actualmente en préstamo. No está disponible por el momento.</p>`
+                    }
                 </div>
             </div>
             
@@ -604,7 +606,7 @@ window.openToolModal = function(id) {
                     <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Fechas de Préstamo</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">date_range</span>
-                        <input id="date-range-${id}" type="text" placeholder="Selecciona el rango de días..." class="w-full glass-input rounded-lg py-3 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 cursor-pointer" readonly>
+                        <input id="date-range-${id}" type="text" placeholder="Selecciona el rango de días..." class="w-full glass-input rounded-lg py-3 pl-10 pr-3 text-on-surface focus:outline-none focus:border-[#97BC62] border border-white/10 placeholder-on-surface-variant/50 ${tool.status !== 'available' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}" ${tool.status !== 'available' ? 'disabled' : ''} readonly>
                     </div>
                 </div>
                 
