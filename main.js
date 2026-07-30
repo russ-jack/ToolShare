@@ -139,13 +139,36 @@ function setupDashboard() {
         return;
     }
 
-    // Renderizar la tabla de herramientas dinámicamente
+    // Configurar pestañas del sidebar
+    setupSidebar();
+
+    // Renderizar la tabla de herramientas dinámicamente en todas las vistas
     renderDashboardTools();
 
     const btnAddTool = document.getElementById('btn-add-tool');
-    if (!btnAddTool) return;
+    const btnAddToolView = document.getElementById('btn-add-tool-view');
     
-    btnAddTool.addEventListener('click', () => {
+    const handleAdd = () => {
+        showAddToolModal((title, category) => {
+            const newTool = {
+                title: title,
+                category: category,
+                categoryIcon: "ph-wrench",
+                owner: { name: "Alejandro (Tú)", initial: "A", rating: 5.0, reviews: 0 },
+                distance: "a 0 metros (tu casa)",
+                image: "https://images.unsplash.com/photo-1508873535684-277a3cb8c90a?auto=format&fit=crop&q=80&w=800", // Imagen genérica
+                status: "available",
+                statusText: "Disponible"
+            };
+            
+            addTool(newTool);
+            renderDashboardTools();
+            showToast("Herramienta publicada con éxito");
+        });
+    };
+
+    if (btnAddTool) btnAddTool.addEventListener('click', handleAdd);
+    if (btnAddToolView) btnAddToolView.addEventListener('click', handleAdd);
         showAddToolModal((title, category) => {
             const newTool = {
                 title: title,
@@ -173,41 +196,93 @@ function setupDashboard() {
     }
 }
 
+// Lógica de Tabs / SPA
+function setupSidebar() {
+    const links = document.querySelectorAll('.sidebar-link');
+    const views = document.querySelectorAll('.view-content');
+    const subtitle = document.getElementById('dashboard-subtitle');
+
+    const viewTitles = {
+        'dashboard': 'Tu taller está funcionando de manera óptima. Tienes herramientas prestadas y solicitudes nuevas.',
+        'herramientas': 'Administra el inventario de todas las herramientas que has publicado para prestar.',
+        'solicitudes': 'Gestiona las peticiones de los vecinos que quieren alquilar tus equipos.',
+        'historial': 'Revisa el registro de todos tus préstamos completados pasados.',
+        'ajustes': 'Actualiza tu perfil y la configuración de privacidad de tu taller.'
+    };
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Remover 'active' de todos
+            links.forEach(l => {
+                l.classList.remove('active', 'text-primary', 'font-bold', 'border-r-2', 'border-primary', 'bg-white/5');
+                l.classList.add('text-on-surface-variant', 'font-medium');
+            });
+            
+            // Activar clickeado
+            const target = e.currentTarget;
+            target.classList.remove('text-on-surface-variant', 'font-medium');
+            target.classList.add('active', 'text-primary', 'font-bold', 'border-r-2', 'border-primary', 'bg-white/5');
+
+            // Cambiar Vista
+            const viewId = target.getAttribute('data-view');
+            views.forEach(v => {
+                if(v.id === `view-${viewId}`) {
+                    v.classList.remove('hidden');
+                    v.classList.add('block');
+                } else {
+                    v.classList.add('hidden');
+                    v.classList.remove('block');
+                }
+            });
+
+            // Cambiar Subtitulo
+            if (subtitle && viewTitles[viewId]) {
+                subtitle.textContent = viewTitles[viewId];
+            }
+        });
+    });
+}
+
 // 7. Renderizar herramientas en Dashboard
 function renderDashboardTools() {
-    const tbody = document.getElementById('dashboard-tools-tbody');
-    if (!tbody) return;
+    const tbodys = document.querySelectorAll('.dashboard-tools-tbody');
+    if (tbodys.length === 0) return;
 
     const tools = getTools();
-    tbody.innerHTML = '';
 
-    if (tools.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-on-surface-variant">No tienes herramientas publicadas.</td></tr>';
-        return;
-    }
+    tbodys.forEach(tbody => {
+        tbody.innerHTML = '';
 
-    tools.forEach(tool => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-white/5 transition-colors group';
-        
-        const statusBadge = tool.status === 'available' 
-            ? `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20"><span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>Disponible</span>`
-            : `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 text-white/70 font-label-sm text-label-sm border border-white/10"><span class="w-1.5 h-1.5 rounded-full bg-white/50 pulse-borrowed"></span>Prestado</span>`;
+        if (tools.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="px-4 py-3 text-center text-on-surface-variant">No tienes herramientas publicadas.</td></tr>';
+            return;
+        }
 
-        tr.innerHTML = `
-            <td class="px-4 py-3 flex items-center gap-3">
-                <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
-                    <img class="w-full h-full object-cover" alt="${tool.title}" src="${tool.image}"/>
-                </div>
-                <span class="font-medium group-hover:text-primary transition-colors">${tool.title}</span>
-            </td>
-            <td class="px-4 py-3 text-on-surface-variant">${tool.category}</td>
-            <td class="px-4 py-3">${statusBadge}</td>
-            <td class="px-4 py-3 text-right">
-                <button onclick="deleteTool(${tool.id})" class="text-error hover:bg-error/10 p-2 rounded-full transition-colors" title="Eliminar"><span class="material-symbols-outlined text-[18px]">delete</span></button>
-            </td>
-        `;
-        tbody.appendChild(tr);
+        tools.forEach(tool => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/5 transition-colors group';
+            
+            const statusBadge = tool.status === 'available' 
+                ? `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[#97BC62]/10 text-[#97BC62] font-label-sm text-label-sm border border-[#97BC62]/20"><span class="w-1.5 h-1.5 rounded-full bg-[#97BC62] pulse-available"></span>Disponible</span>`
+                : `<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-white/5 text-white/70 font-label-sm text-label-sm border border-white/10"><span class="w-1.5 h-1.5 rounded-full bg-white/50 pulse-borrowed"></span>Prestado</span>`;
+
+            tr.innerHTML = `
+                <td class="px-4 py-3 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded bg-surface-variant flex items-center justify-center border border-white/10 overflow-hidden">
+                        <img class="w-full h-full object-cover" alt="${tool.title}" src="${tool.image}"/>
+                    </div>
+                    <span class="font-medium group-hover:text-primary transition-colors">${tool.title}</span>
+                </td>
+                <td class="px-4 py-3 text-on-surface-variant">${tool.category}</td>
+                <td class="px-4 py-3">${statusBadge}</td>
+                <td class="px-4 py-3 text-right">
+                    <button onclick="deleteTool(${tool.id})" class="text-error hover:bg-error/10 p-2 rounded-full transition-colors" title="Eliminar"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
     });
 }
 

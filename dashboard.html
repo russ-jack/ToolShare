@@ -29,35 +29,35 @@
         </div>
         
         <!-- Navigation Links -->
-        <ul class="flex-1 space-y-2">
+        <ul id="sidebar-nav" class="flex-1 space-y-2">
             <!-- Active: Dashboard -->
             <li>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 transition-all duration-200" href="#">
+                <a data-view="dashboard" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 transition-all duration-200" href="#">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-label-md text-label-md">Dashboard</span>
                 </a>
             </li>
             <!-- Inactive -->
             <li>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 scale-102 hover:scale-105" href="#">
+                <a data-view="herramientas" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200" href="#">
                     <span class="material-symbols-outlined">handyman</span>
                     <span class="font-label-md text-label-md">Mis Herramientas</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                <a data-view="solicitudes" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200" href="#">
                     <span class="material-symbols-outlined">pending_actions</span>
                     <span class="font-label-md text-label-md">Solicitudes</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                <a data-view="historial" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200" href="#">
                     <span class="material-symbols-outlined">history</span>
                     <span class="font-label-md text-label-md">Historial</span>
                 </a>
             </li>
             <li>
-                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200 hover:scale-105" href="#">
+                <a data-view="ajustes" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-all duration-200" href="#">
                     <span class="material-symbols-outlined">settings</span>
                     <span class="font-label-md text-label-md">Ajustes</span>
                 </a>
@@ -99,11 +99,15 @@
         <!-- 1. Greeting Header -->
         <header class="mb-lg">
             <h2 class="font-display text-display text-on-surface mb-2 tracking-tight">Hola, Alejandro</h2>
-            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Tu taller está funcionando de manera óptima. Tienes 5 herramientas prestadas y 3 solicitudes nuevas esperando tu aprobación hoy.</p>
+            <p id="dashboard-subtitle" class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Tu taller está funcionando de manera óptima. Tienes 5 herramientas prestadas y 3 solicitudes nuevas esperando tu aprobación hoy.</p>
         </header>
 
-        <!-- 2. Metrics Bento Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-lg">
+        <!-- CONTENEDOR DE VISTAS (SPA) -->
+        <div id="views-container">
+            <!-- VISTA: DASHBOARD -->
+            <div id="view-dashboard" class="view-content block">
+                <!-- 2. Metrics Bento Grid -->
+                <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-lg">
             <!-- Metric 1: Ingresos -->
             <div class="glass-panel rounded-xl p-md flex flex-col hover:scale-[1.02] hover:border-white/20 transition-all duration-200">
                 <div class="flex items-center justify-between mb-4">
@@ -223,7 +227,7 @@
                                     <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="dashboard-tools-tbody" class="divide-y divide-white/5 font-body-md text-body-md text-on-surface">
+                            <tbody id="dashboard-tools-tbody" class="dashboard-tools-tbody divide-y divide-white/5 font-body-md text-body-md text-on-surface">
                                 <!-- Dynamic content rendered by JS -->
                             </tbody>
                         </table>
@@ -257,6 +261,94 @@
                 </section>
             </div>
         </div>
+        </div> <!-- Cierra view-dashboard -->
+
+        <!-- VISTA: MIS HERRAMIENTAS -->
+        <div id="view-herramientas" class="view-content hidden">
+            <section class="glass-panel rounded-xl overflow-hidden flex flex-col mt-4">
+                <div class="p-md border-b border-white/10 flex justify-between items-center">
+                    <h3 class="font-headline-md text-headline-md text-on-surface">Mis Herramientas</h3>
+                    <button id="btn-add-tool-view" class="bg-[#97BC62] text-[#01390c] hover:opacity-90 transition-opacity font-label-md text-label-md font-medium flex items-center gap-1 px-4 py-2 rounded-lg">
+                        <span class="material-symbols-outlined text-[18px]">add</span> Nueva
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-black/20">
+                                <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Herramienta</th>
+                                <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Categoría</th>
+                                <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium">Estado</th>
+                                <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant font-medium text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-tools-tbody-full" class="dashboard-tools-tbody divide-y divide-white/5 font-body-md text-body-md text-on-surface">
+                            <!-- Dynamic content rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- VISTA: SOLICITUDES -->
+        <div id="view-solicitudes" class="view-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <!-- Request Card 1 -->
+                <div class="glass-panel rounded-lg p-6 flex flex-col gap-3 relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img class="w-12 h-12 rounded-full object-cover" data-alt="Carlos" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqDGaHEXEF8QEsspkiKECfvL7e9U2etEVMTwvxURtRn2MebqaNENmaJ5y6eox4rb37zBFTj-xJO5GUhXPMazuJMuYuNdyOsfdr79XAX5-mxxQIvsGlfnnEzxJxbLyEdLIPycMtyX-BTmsOmaeEq6o9d8PbOBIWhLPgyRKohilfXj4sPetc8aHYjjhC-HRNbSA5-X47Wp1vhAJ6wf5YX1lmdQ8bbctV3L5BCpiKWKvq4RNk5Mg8IJwyNw"/>
+                            <div>
+                                <p class="font-label-lg text-label-lg text-on-surface font-bold">Carlos R.</p>
+                                <p class="font-label-md text-label-md text-on-surface-variant">Vecino • a 200m</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 rounded-lg p-4 border border-white/5 mt-2">
+                        <p class="font-body-lg text-body-lg text-on-surface font-medium mb-2">Taladro Percutor Bosch</p>
+                        <p class="text-on-surface-variant font-body-md text-body-md">Solicitud para el fin de semana. "Necesito armar unos muebles, te lo devuelvo el lunes."</p>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="processRequest(this)" class="flex-1 bg-transparent border border-error text-error py-2 rounded-lg font-label-md text-label-md hover:bg-error/10 transition-colors">Rechazar</button>
+                        <button onclick="processRequest(this)" class="flex-1 bg-[#97BC62] text-[#01390c] py-2 rounded-lg font-label-md text-label-md font-medium hover:opacity-90 transition-opacity">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA: HISTORIAL -->
+        <div id="view-historial" class="view-content hidden">
+            <div class="glass-panel p-12 text-center rounded-xl flex flex-col items-center justify-center mt-4 border border-white/5 border-dashed">
+                <span class="material-symbols-outlined text-6xl text-on-surface-variant mb-4 opacity-50">history</span>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-2">No hay historial reciente</h3>
+                <p class="text-on-surface-variant max-w-md">Tus préstamos completados y devueltos aparecerán en esta sección. Actualmente no tienes actividad pasada.</p>
+            </div>
+        </div>
+
+        <!-- VISTA: AJUSTES -->
+        <div id="view-ajustes" class="view-content hidden">
+            <div class="glass-panel p-8 rounded-xl max-w-2xl mt-4">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Configuración de la Cuenta</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Nombre completo</label>
+                        <input type="text" class="w-full glass-input rounded-lg py-3 px-4 text-on-surface focus:outline-none" value="Alejandro (Admin)" disabled>
+                    </div>
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Correo electrónico</label>
+                        <input type="email" class="w-full glass-input rounded-lg py-3 px-4 text-on-surface focus:outline-none" value="admin@vecindario.com" disabled>
+                    </div>
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Ubicación</label>
+                        <input type="text" class="w-full glass-input rounded-lg py-3 px-4 text-on-surface focus:outline-none" value="Residencial Los Sauces" disabled>
+                    </div>
+                    <div class="pt-4 border-t border-white/10">
+                        <button onclick="window.location.href='index.html'" class="px-6 py-2.5 rounded-lg border border-error text-error hover:bg-error/10 transition-colors font-label-md font-medium">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div> <!-- Cierra views-container -->
     </main>
     <script src="db.js"></script>
     <script src="main.js"></script>
